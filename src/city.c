@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-#include "headers/ciudad.h"
+#include "headers/city.h"
 
 void prepararCiudad(Terreno ciudad[][10], int nivel, int x, int y){
 

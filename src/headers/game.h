@@ -1,7 +1,7 @@
 #pragma once
 
-#include "jugador.h"
-#include "bombero.h"
+#include "player.h"
+#include "fireman.h"
 
 void prepararJuego(Jugador *j, Bombero *b, Terreno ciudad[][10]);
 void iniciarJuego(Jugador *j, Bombero *b, Terreno ciudad[][10], Jugador js[], int *contJs);

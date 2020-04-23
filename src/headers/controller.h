@@ -4,9 +4,9 @@
 #include <string.h>
 #include <time.h>
 
-#include "colores.h"
-#include "archivos.h"
-#include "consultas.h"
-#include "juego.h"
+#include "colors.h"
+#include "files.h"
+#include "queries.h"
+#include "game.h"
 
 int menuPrincipal();

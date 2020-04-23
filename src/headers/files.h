@@ -1,6 +1,6 @@
 #pragma once
 
-#include "jugador.h"
+#include "player.h"
 
 char *rutaArchivo();
 void crearArchivo();

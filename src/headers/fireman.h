@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ciudad.h"
+#include "city.h"
 
 typedef struct Bombero{
 	int dinamitas;

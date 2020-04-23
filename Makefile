@@ -1,38 +1,39 @@
-juegoBombero: bin/controlador.o bin/archivos.o bin/colores.o bin/ciudad.o bin/consultas.o bin/bombero.o bin/jugador.o bin/juego.o
-	gcc -Wall -o juegoBombero bin/controlador.o bin/archivos.o bin/colores.o bin/ciudad.o bin/consultas.o bin/bombero.o bin/jugador.o bin/juego.o -lncurses
+gamefireman: bin/controller.o bin/files.o bin/colors.o bin/city.o bin/queries.o bin/fireman.o bin/player.o bin/game.o
+	gcc -Wall -o gamefireman bin/controller.o bin/files.o bin/colors.o bin/city.o bin/queries.o bin/fireman.o bin/player.o bin/game.o -lncurses
 
-bin/controlador.o: src/controlador.c src/headers/archivos.h src/headers/colores.h src/headers/ciudad.h src/headers/consultas.h src/headers/bombero.h src/headers/jugador.h
+bin/controller.o: src/controller.c src/headers/files.h src/headers/colors.h src/headers/city.h src/headers/queries.h src/headers/fireman.h src/headers/player.h
 	mkdir -p bin
-	gcc -c -o bin/controlador.o src/controlador.c
+	gcc -c -o bin/controller.o src/controller.c
 
-bin/archivos.o: src/archivos.c src/headers/archivos.h src/headers/jugador.h
+bin/files.o: src/files.c src/headers/files.h src/headers/player.h
 	mkdir -p bin
-	gcc -c -o bin/archivos.o src/archivos.c
+	gcc -c -o bin/files.o src/files.c
 
-bin/bombero.o: src/bombero.c src/headers/bombero.h src/headers/ciudad.h
+bin/fireman.o: src/fireman.c src/headers/fireman.h src/headers/city.h
 	mkdir -p bin
-	gcc -c -o bin/bombero.o src/bombero.c
+	gcc -c -o bin/fireman.o src/fireman.c
 
-bin/ciudad.o: src/ciudad.c src/headers/ciudad.h
+bin/city.o: src/city.c src/headers/city.h
 	mkdir -p bin
-	gcc -c -o bin/ciudad.o src/ciudad.c
+	gcc -c -o bin/city.o src/city.c
 
-bin/colores.o: src/colores.c src/headers/colores.h
+bin/colors.o: src/colors.c src/headers/colors.h
 	mkdir -p bin
-	gcc -c -o bin/colores.o src/colores.c
+	gcc -c -o bin/colors.o src/colors.c
 
-bin/consultas.o: src/consultas.c src/headers/consultas.h src/headers/archivos.h src/headers/jugador.h
+bin/queries.o: src/queries.c src/headers/queries.h src/headers/files.h src/headers/player.h
 	mkdir -p bin
-	gcc -c -o bin/consultas.o src/consultas.c
+	gcc -c -o bin/queries.o src/queries.c
 
-bin/jugador.o: src/jugador.c src/headers/jugador.h src/headers/ciudad.h
+bin/player.o: src/player.c src/headers/player.h src/headers/city.h
 	mkdir -p bin
-	gcc -c -o bin/jugador.o src/jugador.c
+	gcc -c -o bin/player.o src/player.c
 
-bin/juego.o: src/juego.c src/headers/juego.h src/headers/archivos.h src/headers/colores.h
+bin/game.o: src/game.c src/headers/game.h src/headers/files.h src/headers/colors.h
 	mkdir -p bin
-	gcc -c -o bin/juego.o src/juego.c
+	gcc -c -o bin/game.o src/game.c
 
 clean:
 	rm -f bin/*
-	rm -f juegoBombero
+	rm -f gamefireman
+	rm -f files/*
