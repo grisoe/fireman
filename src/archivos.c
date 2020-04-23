@@ -2,7 +2,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "archivos.h"
+#include "headers/archivos.h"
 
 //Ruta y nombre del archivo en el que se registran las puntuaciones.
 //Cambiarse a una ruta existente en la computadora donde se compile este código.

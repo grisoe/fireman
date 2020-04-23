@@ -1,4 +1,4 @@
-#include "bombero.h"
+#include "headers/bombero.h"
 
 void prepararBombero(Bombero *b, int nivel, int turnos){
 

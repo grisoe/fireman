@@ -1,7 +1,7 @@
 #include <string.h>
 
-#include "consultas.h"
-#include "archivos.h"
+#include "headers/consultas.h"
+#include "headers/archivos.h"
 
 //Aquí está el loop principal de la opción Consultas.
 void consultas()

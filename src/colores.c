@@ -1,6 +1,6 @@
 #include <ncurses.h>
 
-#include "colores.h"
+#include "headers/colores.h"
 
 //Se crean los colores a usar en el juego.
 void iniciarColores(){

@@ -1,6 +1,6 @@
 #include <string.h>
 
-#include "jugador.h"
+#include "headers/jugador.h"
 
 void prepararJugador(Jugador *j){
 

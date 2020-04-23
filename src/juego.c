@@ -1,8 +1,8 @@
 #include <string.h>
 
-#include "juego.h"
-#include "colores.h"
-#include "archivos.h"
+#include "headers/juego.h"
+#include "headers/colores.h"
+#include "headers/archivos.h"
 
 //Sólo sirve para envolver a las otras tres funciones que preparan las cosas
 //necesarias para jugar.
