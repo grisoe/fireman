@@ -2,7 +2,7 @@
 
 #include "headers/city.h"
 
-void prepararCiudad(Terreno ciudad[][10], int nivel, int x, int y){
+void buildCity(Ground city[][10], int level, int x, int y){
 
 	int r;
 	int r2;
@@ -10,77 +10,77 @@ void prepararCiudad(Terreno ciudad[][10], int nivel, int x, int y){
 	int i;
 	int k;
 
-	//Se recorre la matriz (ciudad) para asignarle a cada terreno un tipo,
+	//Se recorre la matriz (city) para asignarle a cada Ground un type,
 	//ponerlo como no dinamitado y sin peligro.
-	for (i = 0; i < nivel; i++){
-		for (k = 0; k < nivel; k++){
+	for (i = 0; i < level; i++){
+		for (k = 0; k < level; k++){
 
-			ciudad[i][k].tipo = 2 + rand() % 2;
-			ciudad[i][k].dinamitado = FALSE;
-			ciudad[i][k].enPeligro = FALSE;
+			city[i][k].type = 2 + rand() % 2;
+			city[i][k].isDynamited = FALSE;
+			city[i][k].isInDanger = FALSE;
 
 		}
 	}
 
-	//El primer fuego no debe aparecer en donde aparece el bombero.
-	//Voy creando coordenadas aleatorias para el primero fuego, hasta que estas
+	//El primer FIRE no debe aparecer en donde aparece el bombero.
+	//Voy creando coordenadas aleatorias para el primero FIRE, hasta que estas
 	//no sean las mismas del bombero.
 	do{
 
-		r = rand() % nivel;
-		r2 = rand() % nivel;
+		r = rand() % level;
+		r2 = rand() % level;
 
 	} while (r == y && r2 == x);
 
-	//Asigno el fuego a la ciudad y el tipo edificio al lugar del bombero.
-	ciudad[r][r2].tipo = FUEGO;
-	ciudad[y][x].tipo = EDIFICIO;
+	//Asigno el FIRE a la city y el type BUILDING al lugar del bombero.
+	city[r][r2].type = FIRE;
+	city[y][x].type = BUILDING;
 
-	setPeligro(ciudad, nivel);
+	setDanger(city, level);
 
 }
 
-//Se ponen en peligro los terrenos a los lados de un fuego.
-void setPeligro(Terreno ciudad[][10], int nivel){
+//Se ponen en peligro los Grounds a los lados de un FIRE.
+void setDanger(Ground city[][10], int level){
 
 	int i;
 	int k;
 
-	//Con "si existe" me refiero a que la coordenada no esté fuera de la ciudad.
+	//Con "si existe" me refiero a que la coordenada no esté fuera de la city.
 
-	//Se recorre la ciudad.
-	for (i = 0; i < nivel; i++){
-		for (k = 0; k < nivel; k++){
+	//Se recorre la city.
+	for (i = 0; i < level; i++){
+		for (k = 0; k < level; k++){
 
-			//Si se encuentra un fuego...
-			if (ciudad[i][k].tipo == FUEGO){
+			//Si se encuentra un FIRE...
+			if (city[i][k].type == FIRE){
 
-				//y el terreno de la izquierda existe, no es de agua ni de fuego...
-				if ((i - 1 >= 0) && (ciudad[i - 1][k].tipo != AGUA) 
-					&& (ciudad[i - 1][k].tipo != FUEGO)){
+				//y el Ground de la izquierda existe, no es de WATER ni de FIRE...
+				if ((i - 1 >= 0) && (city[i - 1][k].type != WATER) 
+					&& (city[i - 1][k].type != FIRE)){
 					//se pone en peligro.
-					ciudad[i - 1][k].enPeligro = TRUE;
+					city[i - 1][k].isInDanger = TRUE;
 				}
 
-				//y el terreno de la derecha existe, no es de agua ni de fuego...
-				if ((i + 1 <= nivel - 1) && (ciudad[i + 1][k].tipo != AGUA) 
-					&& (ciudad[i + 1][k].tipo != FUEGO)){
+				//y el Ground de la derecha existe, no es de WATER ni de FIRE...
+				if ((i + 1 <= level - 1) && (city[i + 1][k].type != WATER) 
+					&& (city[i + 1][k].type != FIRE)){
 					//se pone en peligro.
-					ciudad[i + 1][k].enPeligro = TRUE;
+					city[i + 1][k].isInDanger = TRUE;
 				}
 
-				//y el terreno de abajo existe, no es de agua ni de fuego...
-				if ((k + 1 <= nivel - 1) && (ciudad[i][k + 1].tipo != AGUA) 
-					&& (ciudad[i][k + 1].tipo != FUEGO)){
+				//y el Ground de abajo existe, no es de WATER ni de FIRE...
+				if ((k + 1 <= level - 1) && (city[i][k + 1].type != WATER) 
+					&& (city[i][k + 1].type != FIRE)){
 					//se pone en peligro.
-					ciudad[i][k + 1].enPeligro = TRUE;
+					city[i][k + 1].isInDanger = TRUE;
 				}
 
-				//y el terreno de arriba existe, no es de agua ni de fuego...
-				if ((k - 1 >= 0) && (ciudad[i][k - 1].tipo != AGUA) 
-					&& (ciudad[i][k - 1].tipo != FUEGO)){
+				//y el Ground de arriba existe, no es de WATER ni de FIRE...
+				if ((k - 1 >= 0) && (city[i][k - 1].type != WATER) 
+					&& (city[i][k - 1].type != FIRE)){
 					//se pone en peligro.
-					ciudad[i][k - 1].enPeligro = TRUE;
+					city[i][k - 1].isInDanger = TRUE;
 				}
 
 			}
@@ -90,21 +90,21 @@ void setPeligro(Terreno ciudad[][10], int nivel){
 
 }
 
-//Para incendiar los terrenos.
-void incendiar(Terreno ciudad[][10], int nivel){
+//Para incendiar los Grounds.
+void burnDown(Ground city[][10], int level){
 
 	int i;
 	int k;
 
-	for (i = 0; i < nivel; i++){
-		for (k = 0; k < nivel; k++){
+	for (i = 0; i < level; i++){
+		for (k = 0; k < level; k++){
 
-			//Si el terreno está en peligro...
-			if (ciudad[i][k].enPeligro){
+			//Si el Ground está en peligro...
+			if (city[i][k].isInDanger){
 
 				//Ya no está en peligro, ¡ES EL PELIGRO!
-				ciudad[i][k].enPeligro = FALSE;
-				ciudad[i][k].tipo = FUEGO;
+				city[i][k].isInDanger = FALSE;
+				city[i][k].type = FIRE;
 
 			}
 
@@ -113,16 +113,16 @@ void incendiar(Terreno ciudad[][10], int nivel){
 
 }
 
-int numIncendios(Terreno ciudad[][10], int nivel){
+int getNumFires(Ground city[][10], int level){
 
 	int i;
 	int k;
 	int n = 0;
 
-	for (i = 0; i < nivel; i++){
-		for (k = 0; k < nivel; k++){
+	for (i = 0; i < level; i++){
+		for (k = 0; k < level; k++){
 
-			if (ciudad[i][k].tipo == FUEGO){
+			if (city[i][k].type == FIRE){
 				n++;
 			}
 
@@ -133,33 +133,33 @@ int numIncendios(Terreno ciudad[][10], int nivel){
 	
 }
 
-//Cuando un terreno tipo fuego se dinamita, se debe tener en cuenta que los
-//terrenos a su alrededor pueden estar en peligro no solo por él, sino por otros
-//fuegos vecinos, así que debe validarse eso para no quitar el peligro de un
-//terreno que deba seguir estando amenazado aun dinamitando un fuego.
-void setPeligroMult(int x, int y, int nivel, Terreno ciudad[][10])
+//Cuando un Ground type FIRE se dinamita, se debe tener en cuenta que los
+//Grounds a su alrededor pueden estar en peligro no solo por él, sino por otros
+//FIREs vecinos, así que debe validarse eso para no quitar el peligro de un
+//Ground que deba seguir estando amenazado aun dinamitando un FIRE.
+void setDangerMult(int x, int y, int level, Ground city[][10])
 {
 
 	//Norte.
-	//Si hay un terreno arriba del fuego, a este de arriba se le quita el peligro.
+	//Si hay un Ground arriba del FIRE, a este de arriba se le quita el peligro.
 	if (y - 1 >= 0)
 	{
-		ciudad[y - 1][x].enPeligro = FALSE;
+		city[y - 1][x].isInDanger = FALSE;
 	}
 
-	//Si hay dos terrenos arriba del fuego...
+	//Si hay dos Grounds arriba del FIRE...
 	if (y - 2 >= 0)
 	{
 
-		//y el de hasta arriba también es fuego...
-		if (ciudad[y - 2][x].tipo == FUEGO)
+		//y el de hasta arriba también es FIRE...
+		if (city[y - 2][x].type == FIRE)
 		{
 
-			//y el del centro no es fuego ni agua...
-			if (ciudad[y - 1][x].tipo != FUEGO && ciudad[y - 1][x].tipo != AGUA)
+			//y el del centro no es FIRE ni WATER...
+			if (city[y - 1][x].type != FIRE && city[y - 1][x].type != WATER)
 			{
 				//el del centro se pone en peligro.
-				ciudad[y - 1][x].enPeligro = TRUE;
+				city[y - 1][x].isInDanger = TRUE;
 			}
 		}
 	}
@@ -167,39 +167,39 @@ void setPeligroMult(int x, int y, int nivel, Terreno ciudad[][10])
 	//Misma lógica pero en diferente dirección de aquí hasta el final de la función.
 
 	//Sur.
-	if (y + 1 <= nivel - 1)
+	if (y + 1 <= level - 1)
 	{
-		ciudad[y + 1][x].enPeligro = FALSE;
+		city[y + 1][x].isInDanger = FALSE;
 	}
 
-	if (y + 2 <= nivel - 1)
+	if (y + 2 <= level - 1)
 	{
 
-		if (ciudad[y + 2][x].tipo == FUEGO)
+		if (city[y + 2][x].type == FIRE)
 		{
 
-			if (ciudad[y + 1][x].tipo != FUEGO && ciudad[y + 1][x].tipo != AGUA)
+			if (city[y + 1][x].type != FIRE && city[y + 1][x].type != WATER)
 			{
-				ciudad[y + 1][x].enPeligro = TRUE;
+				city[y + 1][x].isInDanger = TRUE;
 			}
 		}
 	}
 
 	//Este.
-	if (x + 1 <= nivel - 1)
+	if (x + 1 <= level - 1)
 	{
-		ciudad[y][x + 1].enPeligro = FALSE;
+		city[y][x + 1].isInDanger = FALSE;
 	}
 
-	if (x + 2 <= nivel - 1)
+	if (x + 2 <= level - 1)
 	{
 
-		if (ciudad[y][x + 2].tipo == FUEGO)
+		if (city[y][x + 2].type == FIRE)
 		{
 
-			if (ciudad[y][x + 1].tipo != FUEGO && ciudad[y][x + 1].tipo != AGUA)
+			if (city[y][x + 1].type != FIRE && city[y][x + 1].type != WATER)
 			{
-				ciudad[y][x + 1].enPeligro = TRUE;
+				city[y][x + 1].isInDanger = TRUE;
 			}
 		}
 	}
@@ -207,18 +207,18 @@ void setPeligroMult(int x, int y, int nivel, Terreno ciudad[][10])
 	//Oeste
 	if (x - 1 >= 0)
 	{
-		ciudad[y][x - 1].enPeligro = FALSE;
+		city[y][x - 1].isInDanger = FALSE;
 	}
 
 	if (x - 2 >= 0)
 	{
 
-		if (ciudad[y][x - 2].tipo == FUEGO)
+		if (city[y][x - 2].type == FIRE)
 		{
 
-			if (ciudad[y][x - 1].tipo != FUEGO && ciudad[y][x - 1].tipo != AGUA)
+			if (city[y][x - 1].type != FIRE && city[y][x - 1].type != WATER)
 			{
-				ciudad[y][x - 1].enPeligro = TRUE;
+				city[y][x - 1].isInDanger = TRUE;
 			}
 		}
 	}
@@ -227,74 +227,74 @@ void setPeligroMult(int x, int y, int nivel, Terreno ciudad[][10])
 	if (y - 1 >= 0 && x - 1 >= 0)
 	{
 
-		if (ciudad[y - 1][x - 1].tipo == FUEGO)
+		if (city[y - 1][x - 1].type == FIRE)
 		{
 
-			if (ciudad[y - 1][x].tipo != AGUA && ciudad[y - 1][x].tipo != FUEGO)
+			if (city[y - 1][x].type != WATER && city[y - 1][x].type != FIRE)
 			{
-				ciudad[y - 1][x].enPeligro = TRUE;
+				city[y - 1][x].isInDanger = TRUE;
 			}
 
-			if (ciudad[y][x - 1].tipo != AGUA && ciudad[y][x - 1].tipo != FUEGO)
+			if (city[y][x - 1].type != WATER && city[y][x - 1].type != FIRE)
 			{
-				ciudad[y][x - 1].enPeligro = TRUE;
+				city[y][x - 1].isInDanger = TRUE;
 			}
 		}
 	}
 
 	//Noreste.
-	if (y - 1 >= 0 && x + 1 <= nivel - 1)
+	if (y - 1 >= 0 && x + 1 <= level - 1)
 	{
 
-		if (ciudad[y - 1][x + 1].tipo == FUEGO)
+		if (city[y - 1][x + 1].type == FIRE)
 		{
 
-			if (ciudad[y - 1][x].tipo != AGUA && ciudad[y - 1][x].tipo != FUEGO)
+			if (city[y - 1][x].type != WATER && city[y - 1][x].type != FIRE)
 			{
-				ciudad[y - 1][x].enPeligro = TRUE;
+				city[y - 1][x].isInDanger = TRUE;
 			}
 
-			if (ciudad[y][x + 1].tipo != AGUA && ciudad[y][x + 1].tipo != FUEGO)
+			if (city[y][x + 1].type != WATER && city[y][x + 1].type != FIRE)
 			{
-				ciudad[y][x + 1].enPeligro = TRUE;
+				city[y][x + 1].isInDanger = TRUE;
 			}
 		}
 	}
 
 	//Sureste.
-	if (y + 1 <= nivel - 1 && x + 1 <= nivel - 1)
+	if (y + 1 <= level - 1 && x + 1 <= level - 1)
 	{
 
-		if (ciudad[y + 1][x + 1].tipo == FUEGO)
+		if (city[y + 1][x + 1].type == FIRE)
 		{
 
-			if (ciudad[y + 1][x].tipo != AGUA && ciudad[y + 1][x].tipo != FUEGO)
+			if (city[y + 1][x].type != WATER && city[y + 1][x].type != FIRE)
 			{
-				ciudad[y + 1][x].enPeligro = TRUE;
+				city[y + 1][x].isInDanger = TRUE;
 			}
 
-			if (ciudad[y][x + 1].tipo != AGUA && ciudad[y][x + 1].tipo != FUEGO)
+			if (city[y][x + 1].type != WATER && city[y][x + 1].type != FIRE)
 			{
-				ciudad[y][x + 1].enPeligro = TRUE;
+				city[y][x + 1].isInDanger = TRUE;
 			}
 		}
 	}
 
 	//Suroeste.
-	if (y + 1 <= nivel - 1 && x - 1 >= 0)
+	if (y + 1 <= level - 1 && x - 1 >= 0)
 	{
 
-		if (ciudad[y + 1][x - 1].tipo == FUEGO)
+		if (city[y + 1][x - 1].type == FIRE)
 		{
 
-			if (ciudad[y + 1][x].tipo != AGUA && ciudad[y + 1][x].tipo != FUEGO)
+			if (city[y + 1][x].type != WATER && city[y + 1][x].type != FIRE)
 			{
-				ciudad[y + 1][x].enPeligro = TRUE;
+				city[y + 1][x].isInDanger = TRUE;
 			}
 
-			if (ciudad[y][x - 1].tipo != AGUA && ciudad[y][x - 1].tipo != FUEGO)
+			if (city[y][x - 1].type != WATER && city[y][x - 1].type != FIRE)
 			{
-				ciudad[y][x - 1].enPeligro = TRUE;
+				city[y][x - 1].isInDanger = TRUE;
 			}
 		}
 	}
