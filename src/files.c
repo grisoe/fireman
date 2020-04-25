@@ -7,19 +7,19 @@
 //Ruta y nombre del archivo en el que se registran las puntuaciones.
 //Cambiarse a una ruta existente en la computadora donde se compile este código.
 //Es global porque se usa en varias funciones.
-//char *RUTA_A_ARCHIVO = "/home/srg/Desktop/ProyectoFinal/files/puntosJugadores";
+//char *RUTA_A_ARCHIVO = "/home/srg/Desktop/ProyectoFinal/files/playersRecords";
 
-char *rutaArchivo(){
+char *recordsPath(){
 
     char cwd[150];
     
 
         if (getcwd(cwd, sizeof(cwd)) != NULL) {
             
-            char *result = malloc(strlen("/files/puntosJugadores") + strlen(cwd) + 1);
+            char *result = malloc(strlen("/files/playersRecords") + strlen(cwd) + 1);
 
             strcpy(result, cwd);
-            strcat(result, "/files/puntosJugadores");
+            strcat(result, "/files/playersRecords");
 
             return result;
 
@@ -30,19 +30,19 @@ char *rutaArchivo(){
 
 }
 
-void escribirEnArchivo(Jugador *js, int contJs){
+void writeRecords(Player *js, int numJs){
 
-    //Se abre el archivo en modo lectura.
+    //Se abre el archivo en mode lectura.
     //Más información en la función abrirArchivo().
-    FILE *fd = abrirArchivo(1);
+    FILE *fd = openRecords(1);
 
-    //Se saca al último jugador almacenado.
-    Jugador jug = js[contJs - 1];
+    //Se saca al último Player almacenado.
+    Player jug = js[numJs - 1];
 
     //Nos vamos hasta el final del archivo.
     fseek(fd, 0, SEEK_END);
-    //Se escribe el jugador.
-    fwrite(&jug, sizeof(Jugador), 1, fd);
+    //Se escribe el Player.
+    fwrite(&jug, sizeof(Player), 1, fd);
 
     //Se cierra el archivo.
     fclose(fd);
@@ -50,9 +50,9 @@ void escribirEnArchivo(Jugador *js, int contJs){
 }
 
 //Si al iniciar el programa no existe el archivo de puntos, lo crea.
-void crearArchivo(){
+void createRecords(){
 
-    FILE *fd = fopen(rutaArchivo(), "ab+");
+    FILE *fd = fopen(recordsPath(), "ab+");
 
 	//Cuando no se puede abrir o crear nu archivo, open() regresa un -1.
 	if(fd == NULL){
@@ -74,17 +74,17 @@ void crearArchivo(){
 }
 
 //Se abre el archivo para leerlo o para escribir en él.
-//modo 0 es lectura, modo != 0 es escritura.
-FILE* abrirArchivo(int modo){
+//mode 0 es lectura, mode != 0 es escritura.
+FILE* openRecords(int mode){
 
     FILE *fd;
 
-    if(modo == 0){
-		fd = fopen(rutaArchivo(), "r");
-	}else if(modo == 1){
-		fd = fopen(rutaArchivo(), "aw");
-	}else if(modo == 2){
-        fd = fopen(rutaArchivo(), "r+");
+    if(mode == 0){
+		fd = fopen(recordsPath(), "r");
+	}else if(mode == 1){
+		fd = fopen(recordsPath(), "aw");
+	}else if(mode == 2){
+        fd = fopen(recordsPath(), "r+");
     }
 
     if(fd == NULL){
