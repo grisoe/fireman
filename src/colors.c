@@ -3,7 +3,7 @@
 #include "headers/colors.h"
 
 //Se crean los colores a usar en el juego.
-void iniciarColores(){
+void startColors(){
 
 	//Función de ncurses para decirle que vamos a usar colores.
 	start_color();
@@ -30,7 +30,7 @@ void iniciarColores(){
 }
 
 //Se apagan los atributos de los 13 colores.
-void terminarColores(){
+void stopColors(){
 
 	int i;
 
