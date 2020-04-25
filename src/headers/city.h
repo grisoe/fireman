@@ -7,9 +7,9 @@ typedef enum{
 } Ground_type;
 
 typedef struct Ground{
-	Ground_type tipo;
-	bool dinamitado;
-	bool enPeligro;
+	Ground_type type;
+	bool isDynamited;
+	bool isInDanger;
 } Ground;
 
 /* void prepararCiudad(Ground ciudad[][10], int nivel, int x, int y);
