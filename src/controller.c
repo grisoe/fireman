@@ -3,24 +3,24 @@
 int main(){
 
 	//Se explica en su definición.
-	crearArchivo();
+	createRecords();
 
-	Bombero b;
-	Jugador j;
+	Fireman b;
+	Player j;
 
-	//De 10x10 porque es lo máximo que puede medir la ciudad.
-	Terreno ciudad[10][10];
+	//De 10x10 porque es lo máximo que puede medir la city.
+	Ground city[10][10];
 
-	//Este arreglo es para guardar a todos los jugadores de una sola ejecución
+	//Este arreglo es para guardar a todos los Playeres de una sola ejecución
 	//del programa. 100 posiciones por si es algún traumado (como los que juegan Solitario).
-	Jugador js[100];
-	//Contador de los jugadores almacenados en el arreglo.
-	int contJs = 0;
+	Player js[100];
+	//Contador de los Playeres almacenados en el arreglo.
+	int numJs = 0;
 
 	//Nos dice si ya se preparó un juego o no.
 	//bool no es un tipo de dato nativo de C, está definido en ncurses,
 	//al igual que sus posibles valores (TRUE y FALSE).
-	bool preparado = FALSE;
+	bool isReady = FALSE;
 
 	//Para almacenar la opción del menú principal.
 	int menu;
@@ -33,7 +33,7 @@ int main(){
 	initscr();
 
 	//Explicada en su definición.
-	iniciarColores();
+	startColors();
 
 	//No recuerdo para que es esta línea; la comento y todo funciona igual.
 	//Tal vez fue para resolver un problema específico de cierta terminal.
@@ -51,35 +51,35 @@ int main(){
 		//par de estos. En la definición de iniciarColores() explico este número.
 		attron(COLOR_PAIR(5));
 
-		menu = menuPrincipal();
+		menu = mainMenu();
 
 		switch(menu){
 
 			case 1: //Preparar juego.
 
-				if(preparado){
+				if(isReady){
 					printw("\nYa hay un juego listo para jugarse.");
 					getch();
 					refresh();
 				}else{
-					//Preparar un juego se divide en la preparación del jugador,
-					//del bombero y de la ciudad.
-					prepararJuego(&j, &b, ciudad);
+					//Preparar un juego se divide en la preparación del Player,
+					//del bombero y de la city.
+					setGame(&j, &b, city);
 					//Ya se preparó.
-					preparado = TRUE;
+					isReady = TRUE;
 				}
 
 				break;
 
 			case 2: //Iniciar juego.
 
-				if(preparado){
-					//Para iniciar el juego se necesita de un jugador, un bombero,
-					//una ciudad, el arreglo de jugadores (para guardar al que va a jugar),
-					//y el contador de jugadores en el arreglo (para incrementarlo).
-					iniciarJuego(&j, &b, ciudad, js, &contJs);
-					//Ya se jugó, por lo tanto no hay juego preparado.
-					preparado = FALSE;
+				if(isReady){
+					//Para iniciar el juego se necesita de un Player, un bombero,
+					//una city, el arreglo de Playeres (para guardar al que va a jugar),
+					//y el contador de Playeres en el arreglo (para incrementarlo).
+					startGame(&j, &b, city, js, &numJs);
+					//Ya se jugó, por lo tanto no hay juego isReady.
+					isReady = FALSE;
 				}else{
 					printw("\nPrimero tienes que preparar un juego.");
 					getch();
@@ -90,11 +90,11 @@ int main(){
 
 			case 3: //Consultas.
 
-				fd = abrirArchivo(0);
+				fd = openRecords(0);
 
 				fseek(fd, 0, SEEK_END);
 
-				if(ftell(fd) / sizeof(Jugador) == 0){
+				if(ftell(fd) / sizeof(Player) == 0){
 
 					printw("\nNo hay registro alguno.");
 
@@ -110,7 +110,7 @@ int main(){
 					//El par de colores 5 es fondo negro con letras blancas.
 					//Se hace así para una mejor lectura de puntuación.		
 					attron(COLOR_PAIR(5));
-					consultas();
+					queries();
 
 				}
 
@@ -140,7 +140,7 @@ int main(){
 }
 
 //Para pedir y regresar la opción deseada del menú principal.
-int menuPrincipal(){
+int mainMenu(){
 
 	clear();
 
