@@ -1,4 +1,5 @@
 # bombero
 
-To install: make
-To clean project: make clean
+To install: make\n
+To clean project: make clean\n
+TO run: ./gamefireman
