@@ -2,7 +2,7 @@
 
 #include "player.h"
 
-char *rutaArchivo();
-void crearArchivo();
-FILE* abrirArchivo(int modo);
-void escribirEnArchivo(Jugador *js, int contJs);
+char *recordsPath();
+void createRecords();
+FILE* openRecords(int mode);
+void writeRecords(Jugador *js, int numJs);
