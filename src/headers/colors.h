@@ -1,4 +1,4 @@
 #pragma once
 
-void iniciarColores();
-void terminarColores();
+void startColors();
+void stopColors();
