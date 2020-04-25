@@ -9,4 +9,4 @@
 #include "queries.h"
 #include "game.h"
 
-int menuPrincipal();
+int mainMenu();
