@@ -5,4 +5,4 @@
 char *recordsPath();
 void createRecords();
 FILE* openRecords(int mode);
-void writeRecords(Jugador *js, int numJs);
+void writeRecords(Player *js, int numJs);
