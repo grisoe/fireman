@@ -9,5 +9,5 @@ typedef struct Player{
 	int turns;
 } Player;
 
-void SetPlayer(Player *j);
+void setPlayer(Player *j);
 void setPoints(Player *j, Ground city[][10]);

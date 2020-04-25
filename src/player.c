@@ -53,7 +53,7 @@ void setPlayer(Player *j){
 }
 
 //Se cuentan los puntos en función de los edificios en pie y se asignan al Player.
-void setPonints(Player *j, Ground city[][10]){
+void setPoints(Player *j, Ground city[][10]){
 
 	int i;
 	int k;

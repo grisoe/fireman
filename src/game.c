@@ -283,8 +283,7 @@ void showMap(Ground city[][10], int level, int x, int y){
 
 }
 
-void showPosInfo(Ground city[][10], int y, int x, int turn,
-	int turns, int dynamites){
+void showPosInfo(Ground city[][10], int y, int x, int turn, int turns, int dynamites){
 
 	char type[10];
 
