@@ -2,12 +2,12 @@
 
 #include "city.h"
 
-typedef struct fireman{
+typedef struct Fireman{
 	int dynamites;
 	int x;
 	int y;
-} fireman;
+} Fireman;
 
-void createFireman(fireman *b, int level, int turns);
-int moveFireman(int direction, fireman *b, int level);
+void createFireman(Fireman *b, int level, int turns);
+int moveFireman(int direction, Fireman *b, int level);
 int dynamite(int x, int y, int level, Ground city[][10]);
