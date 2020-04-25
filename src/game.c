@@ -6,15 +6,15 @@
 
 //Sólo sirve para envolver a las otras tres funciones que preparan las cosas
 //necesarias para jugar.
-void prepararJuego(Jugador *j, Bombero *b, Terreno ciudad[][10]){
+void setGame(Player *j, Fireman *b, Ground city[][10]){
 
 	clear();
 
 	printw("---------------Preparar Juego---------------\n\n");
 
-	prepararJugador(j);
-	prepararBombero(b, j->nivel, j->turnos);
-	prepararCiudad(ciudad, j->nivel, b->x, b->y);
+	setPlayer(j);
+	createFireman(b, j->level, j->turns);
+	buildCity(city, j->level, b->x, b->y);
 
 	printw("\n¡Juego listo!");
 
@@ -23,25 +23,24 @@ void prepararJuego(Jugador *j, Bombero *b, Terreno ciudad[][10]){
 
 }
 
-void iniciarJuego(Jugador *j, Bombero *b, Terreno ciudad[][10],
-	Jugador js[], int *contJs){
+void startGame(Player *j, Fireman *b, Ground city[][10], Player js[], int *numJs){
 
 	
 
-	int turnos;
+	int turns;
 	//Opción elegida por el usuario.
 	int opc;
 	//Mientras intentes hacer cosas inválidas, esta variable se mantendrá en 0.
 	//Esto es así para no perder un turno por el intento de movimiento ilegal.
 	//Obviamente, cada movimiento válido pone esta bandera en 1, sacándote del
-	//do-while y dantro otra vuelta en el ciclo for, que es el de los turnos.
+	//do-while y dantro otra vuelta en el ciclo for, que es el de los turns.
 	//Qué trucazo, ¿no?
 	int band;
-	int din = b->dinamitas;
+	int din = b->dynamites;
 	int incendios;
 
 	//Ciclo principal del juego (cuando ya te estás moviendo y dinamitando).
-	for(turnos = 1; turnos <= j->turnos; turnos++){
+	for(turns = 1; turns <= j->turns; turns++){
 
 		//Cuando no hay incendios te sales del ciclo porque apagaste todos
 		//y ya no hay nada que hacer.
@@ -58,10 +57,10 @@ void iniciarJuego(Jugador *j, Bombero *b, Terreno ciudad[][10],
 			printw("---------------Juego Iniciado---------------");
 
 			//Se actualiza el mapa y la información con cada vuelta, legal o ilegal.
-			mostrarMapa(ciudad, j->nivel, b->x, b->y);
-			mostrarInfoPosicion(ciudad, b->y, b->x, turnos, j->turnos, din);
+			showMap(city, j->level, b->x, b->y);
+			showPosInfo(city, b->y, b->x, turns, j->turns, din);
 
-			opc = menuAccion();
+			opc = actionMenu();
 
 			switch(opc){
 
@@ -71,17 +70,17 @@ void iniciarJuego(Jugador *j, Bombero *b, Terreno ciudad[][10],
 				case 2:
 				case 3:
 				case 4:
-					band = moverse(opc, b, j->nivel);
+					band = moveFireman(opc, b, j->level);
 
 					break;
 
 				//La opción 5 es para dinamitar.
 				case 5:
 
-					if(din > 0){ //Si te quedan, dinamitas.
+					if(din > 0){ //Si te quedan, dynamites.
 
 						//Si puedo dinamitar, guardo un 1.
-						band = dinamitar(b->x, b->y, j->nivel, ciudad);
+						band = dynamite(b->x, b->y, j->level, city);
 
 						//Resta una dinamita sólo si logró dinamitar.
 						if(band == 1){
@@ -89,7 +88,7 @@ void iniciarJuego(Jugador *j, Bombero *b, Terreno ciudad[][10],
 						}
 
 					}else{
-						printw("\nYa no tienes dinamitas.\n");
+						printw("\nYa no tienes dynamites.\n");
 						band = 0;
 						getch();
 						refresh();
@@ -104,15 +103,15 @@ void iniciarJuego(Jugador *j, Bombero *b, Terreno ciudad[][10],
 			}
 
 			//Se actualiza el número de incendios.
-			incendios = numIncendios(ciudad, j->nivel);
+			incendios = getNumFires(city, j->level);
 
 		}while(band == 0);
 
-		//Cada tercer turno se incendian los terrenos en peligro y se ponen
-		//en peligro los adyacentes a estos nuevos fuegos.
-		if(turnos % 3 == 0){
-			incendiar(ciudad, j->nivel);
-			setPeligro(ciudad, j->nivel);
+		//Cada tercer turno se incendian los Grounds en peligro y se ponen
+		//en peligro los adyacentes a estos nuevos FIREs.
+		if(turns % 3 == 0){
+			burnDown(city, j->level);
+			setDanger(city, j->level);
 		}
 
 	}
@@ -124,14 +123,14 @@ void iniciarJuego(Jugador *j, Bombero *b, Terreno ciudad[][10],
 
 	printw("---------------Juego Iniciado---------------");
 	
-	mostrarMapa(ciudad, j->nivel, b->x, b->y);
-	mostrarInfoPosicion(ciudad, b->y, b->x, turnos, j->turnos, din);
+	showMap(city, j->level, b->x, b->y);
+	showPosInfo(city, b->y, b->x, turns, j->turns, din);
 	
-	//Si logras vencer al fuego se te felicita con mucho entusiasmo.
+	//Si logras vencer al FIRE se te felicita con mucho entusiasmo.
 	if(incendios == 0){
 		printw("\n¡Has acabado con todos los incendios!\n");
-		//Los turnos tienen un offset positivo de 1, así que se lo resto aquí.
-		j->turnos = turnos - 1;
+		//Los turns tienen un offset positivo de 1, así que se lo resto aquí.
+		j->turns = turns - 1;
 	}
 
 	//Si no acabaste con todos los incendios, se imprime un mensaje
@@ -140,15 +139,15 @@ void iniciarJuego(Jugador *j, Bombero *b, Terreno ciudad[][10],
 		printw("\n¡Ha legado la lluvia!\n");
 	}
 
-	setPuntuacion(j, ciudad);
-	printw("\nTu puntuación es: %d\n", j->puntuacion);
+	setPoints(j, city);
+	printw("\nTu puntuación es: %d\n", j->points);
 
-	//Se guarda el jugador en el arreglo y se incrementa el contador de jugadores.
-	js[*contJs] = *j;
-	(*contJs)++;
+	//Se guarda el Player en el arreglo y se incrementa el contador de Playeres.
+	js[*numJs] = *j;
+	(*numJs)++;
 
-	//Se escribe la información del jugador en un archivo.
-	escribirEnArchivo(js, *contJs);
+	//Se escribe la información del Player en un archivo.
+	writeRecords(js, *numJs);
 
 	//No te deja salir del juego hasta que presiones la tecla "s".
 	//Lo hice así para que no te salgas sin querer del juego por presionar
@@ -164,23 +163,23 @@ void iniciarJuego(Jugador *j, Bombero *b, Terreno ciudad[][10],
 }
 
 //Muestra la información de cabecera y el mapa coloreado del juego.
-//Los parámetros "x" y "y" son las coordenadas del bombero.
-void mostrarMapa(Terreno ciudad[][10], int nivel, int x, int y){
+//Los parámetros "x" y "y" son las coordenadas del Fireman.
+void showMap(Ground city[][10], int level, int x, int y){
 
-	//Para guardar los caracteres a mostrarse en cada terreno.
+	//Para guardar los caracteres a mostrarse en cada Ground.
 	char desc[5];
 
 	int i;
 	int k;
 
-	printw("\n\nE-Edificio, P-Pastizal, A-Agua, F-Fuego, B-Bombero, "
+	printw("\n\nE-BUILDING, P-PASTURE, A-WATER, F-FIRE, B-Fireman, "
 		"!-En peligro, *-Dinamitado\n\n");
 
-	//Se recorre la ciudad.
-	for(i = 0; i < nivel; i++){
-		for(k = 0; k < nivel; k++){
+	//Se recorre la city.
+	for(i = 0; i < level; i++){
+		for(k = 0; k < level; k++){
 
-			//Si las coordenadas del terreno son las mismas que las del bombero
+			//Si las coordenadas del Ground son las mismas que las del Fireman
 			//se concatena una B.
 			if(k == x && i == y){
 				strcpy(desc, " B");
@@ -188,83 +187,83 @@ void mostrarMapa(Terreno ciudad[][10], int nivel, int x, int y){
 				strcpy(desc, " ");
 			}
 
-			//Se concatena la letra correspondiente al tipo de terreno
+			//Se concatena la letra correspondiente al type de Ground
 			//y se enciende el color que le corresponde.
-			if(ciudad[i][k].tipo == EDIFICIO){
+			if(city[i][k].type == BUILDING){
 
 				strcat(desc, "E");
 				attron(COLOR_PAIR(4));
 
-			}else if(ciudad[i][k].tipo == PASTIZAL){
+			}else if(city[i][k].type == PASTURE){
 
 				strcat(desc, "P");
 				attron(COLOR_PAIR(2));
 
-			}else if(ciudad[i][k].tipo == FUEGO){
+			}else if(city[i][k].type == FIRE){
 
 				strcat(desc, "F");
 				attron(COLOR_PAIR(1));
 
-			}else if(ciudad[i][k].tipo == AGUA){
+			}else if(city[i][k].type == WATER){
 
 				strcat(desc, "A");
 				attron(COLOR_PAIR(3));
 
 			}
 
-			//Además, si el terreno ya está dinamitado, se concatena el asterisco.
-			if(ciudad[i][k].dinamitado){
+			//Además, si el Ground ya está dinamitado, se concatena el asterisco.
+			if(city[i][k].isDynamited){
 				strcat(desc, "*");
 			}
 
 			//Misma lógica que arriba.
-			if(ciudad[i][k].enPeligro){
+			if(city[i][k].isInDanger){
 				strcat(desc, "!");
 			}
 
-			//Se concatena un tab al final para darle espacio al terreno
+			//Se concatena un tab al final para darle espacio al Ground
 			//(por eso se ven rectangulares, con los caracteres del lado izquierdo).
 			strcat(desc, "\t");
 
-			//Los terrenos de arriba tienen las letras negras.
+			//Los Grounds de arriba tienen las letras negras.
 
-			//El terreno en el que se encuentra el bombero tiene letras moradas.
+			//El Ground en el que se encuentra el Fireman tiene letras moradas.
 			if(desc[1] == 'B'){
 
-				if(ciudad[i][k].tipo == EDIFICIO){
+				if(city[i][k].type == BUILDING){
 					attron(COLOR_PAIR(9));
 				}
 
-				if(ciudad[i][k].tipo == PASTIZAL){
+				if(city[i][k].type == PASTURE){
 					attron(COLOR_PAIR(7));
 				}
 
-				if(ciudad[i][k].tipo == FUEGO){
+				if(city[i][k].type == FIRE){
 					attron(COLOR_PAIR(6));
 				}
 
-				if(ciudad[i][k].tipo == AGUA){
+				if(city[i][k].type == WATER){
 					attron(COLOR_PAIR(8));
 				}
 
 			}
 
-			//El terreno que está en peligro tiene letras amarillas.
+			//El Ground que está en peligro tiene letras amarillas.
 			if(desc[2] == '!'){
 
-				if(ciudad[i][k].tipo == EDIFICIO){
+				if(city[i][k].type == BUILDING){
 					attron(COLOR_PAIR(13));
 				}
 
-				if(ciudad[i][k].tipo == PASTIZAL){
+				if(city[i][k].type == PASTURE){
 					attron(COLOR_PAIR(11));
 				}
 
-				if(ciudad[i][k].tipo == FUEGO){
+				if(city[i][k].type == FIRE){
 					attron(COLOR_PAIR(10));
 				}
 
-				if(ciudad[i][k].tipo == AGUA){
+				if(city[i][k].type == WATER){
 					attron(COLOR_PAIR(12));
 				}
 
@@ -273,10 +272,10 @@ void mostrarMapa(Terreno ciudad[][10], int nivel, int x, int y){
 			//Se imprime la cadena.
 			printw("%s", desc);
 
-			//Se termina el color de este terreno.
-			//Así funciona esto: prendes colores de un terreno, coloreas, apagas
-			//y vuelves a empezar con el terreno siguiente.
-			terminarColores();
+			//Se termina el color de este Ground.
+			//Así funciona esto: prendes colores de un Ground, coloreas, apagas
+			//y vuelves a empezar con el Ground siguiente.
+			stopColors();
 
 		}
 		printw("\n\n\n");
@@ -284,32 +283,32 @@ void mostrarMapa(Terreno ciudad[][10], int nivel, int x, int y){
 
 }
 
-void mostrarInfoPosicion(Terreno ciudad[][10], int y, int x, int turno,
-	int turnos, int dinamitas){
+void showPosInfo(Ground city[][10], int y, int x, int turn,
+	int turns, int dynamites){
 
-	char tipo[10];
+	char type[10];
 
-	if(ciudad[y][x].tipo == FUEGO){
-		strcpy(tipo, "Fuego");
-	}else if(ciudad[y][x].tipo == AGUA){
-		strcpy(tipo, "Agua");
-	}else if(ciudad[y][x].tipo == PASTIZAL){
-		strcpy(tipo, "Pastizal");
-	}else if(ciudad[y][x].tipo == EDIFICIO){
-		strcpy(tipo, "Edificio");
+	if(city[y][x].type == FIRE){
+		strcpy(type, "FIRE");
+	}else if(city[y][x].type == WATER){
+		strcpy(type, "WATER");
+	}else if(city[y][x].type == PASTURE){
+		strcpy(type, "PASTURE");
+	}else if(city[y][x].type == BUILDING){
+		strcpy(type, "BUILDING");
 	}
 
-	printw("Se encuentra en: %s\t", tipo);
+	printw("Se encuentra en: %s\t", type);
 	printw("En coordenadas: X=%d, Y=%d\n", x, y);
-	printw("Dinamitado: %s\t\t\t", ciudad[y][x].dinamitado ? "Sí" : "No");
-	printw("En peligro: %s\n", ciudad[y][x].enPeligro ? "Sí" : "No");
-	printw("Dinamitas: %d\t\t\t", dinamitas);
-	printw("Turno %d de %d\n", turno, turnos);
+	printw("Dinamitado: %s\t\t\t", city[y][x].isDynamited ? "Sí" : "No");
+	printw("En peligro: %s\n", city[y][x].isInDanger ? "Sí" : "No");
+	printw("dynamites: %d\t\t\t", dynamites);
+	printw("Turno %d de %d\n", turn, turns);
 
 }
 
 //Se pide el movimiento deseado en el juego y se regresa al ciclo de este.
-int menuAccion(){
+int actionMenu(){
 
 	int opc;
 
