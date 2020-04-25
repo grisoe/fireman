@@ -1,36 +1,36 @@
 #include "headers/fireman.h"
 
-void prepararBombero(Bombero *b, int nivel, int turnos){
+void createFireman(Fireman *b, int level, int turns){
 
 	int x;
 	int y;
 
 	//Definido en el pdf.
-	b->dinamitas = turnos - 3;
+	b->dynamites = turns - 3;
 
-	//Al nivel le resto uno porque, si se elige un 10, por ejemplo, 
+	//Al level le resto uno porque, si se elige un 10, por ejemplo, 
 	//las coordenadas irán del 0 al 9.
-	printw("Ingresa la coordenada X del bombero (0-%d): ", nivel - 1);
+	printw("Ingresa la coordenada X del Fireman (0-%d): ", level - 1);
 	scanw("%d", &x);
-	while(x < 0 || x > nivel - 1){
+	while(x < 0 || x > level - 1){
 
-		printw("\nLa coordenada X del bombero debe estar entre 0 y %d."
-			"\n\n", nivel - 1);
+		printw("\nLa coordenada X del Fireman debe estar entre 0 y %d."
+			"\n\n", level - 1);
 
-		printw("Ingresa la coordenada X del bombero (0-%d): ", nivel - 1);
+		printw("Ingresa la coordenada X del Fireman (0-%d): ", level - 1);
 		scanw("%d", &x);
 
 	}
 	b->x = x;
 
-	printw("Ingresa la coordenada Y del bombero (0-%d): ", nivel - 1);
+	printw("Ingresa la coordenada Y del Fireman (0-%d): ", level - 1);
 	scanw("%d", &y);
-	while(y < 0 || y > nivel - 1){
+	while(y < 0 || y > level - 1){
 
-		printw("\nLa coordenada Y del bombero debe estar entre 0 y %d."
-			"\n\n", nivel - 1);
+		printw("\nLa coordenada Y del Fireman debe estar entre 0 y %d."
+			"\n\n", level - 1);
 
-		printw("Ingresa la coordenada Y del bombero (0-%d): ", nivel - 1);
+		printw("Ingresa la coordenada Y del Fireman (0-%d): ", level - 1);
 		scanw("%d", &y);
 
 	}
@@ -39,14 +39,14 @@ void prepararBombero(Bombero *b, int nivel, int turnos){
 }
 
 
-int moverse(int direccion, Bombero *b, int nivel){
+int moveFireman(int direction, Fireman *b, int level){
 
-	if(direccion == 1){ //Mover hacia arriba.
+	if(direction == 1){ //Mover hacia arriba.
 
 		//Pero sólo si se puede.
 		if((b->y) - 1 >= 0){
 
-			//Nueva coordenada del bombero en esa dirección.
+			//Nueva coordenada del Fireman en esa dirección.
 			(b->y)--;
 			//El 1 le dice al juego que si pudiste moverte.
 			return 1;
@@ -62,9 +62,9 @@ int moverse(int direccion, Bombero *b, int nivel){
 
 		}
 
-	}else if(direccion == 2){ //Mover hacia abajo.
+	}else if(direction == 2){ //Mover hacia abajo.
 
-		if((b->y) + 1 < nivel){
+		if((b->y) + 1 < level){
 
 			(b->y)++;
 			return 1;
@@ -79,9 +79,9 @@ int moverse(int direccion, Bombero *b, int nivel){
 
 		}
 
-	}else if(direccion == 4){ //Mover hacia la derecha.
+	}else if(direction == 4){ //Mover hacia la derecha.
 
-		if((b->x) + 1 < nivel){
+		if((b->x) + 1 < level){
 
 			(b->x)++;
 			return 1;
@@ -96,7 +96,7 @@ int moverse(int direccion, Bombero *b, int nivel){
 
 		}
 
-	}else if(direccion == 3){ //Mover hacia la izquierda.
+	}else if(direction == 3){ //Mover hacia la izquierda.
 
 		if((b->x) - 1 >= 0){
 
@@ -123,23 +123,23 @@ int moverse(int direccion, Bombero *b, int nivel){
 }
 
 //Se dinamita el terreno de cierta coordenada.
-int dinamitar(int x, int y, int nivel, Terreno ciudad[][10]){
+int dynamite(int x, int y, int level, Ground city[][10]){
 
-	// void setPeligroMult(int x, int y, int nivel, Terreno ciudad[][10]);
+	// void setPeligroMult(int x, int y, int level, Terreno ciudad[][10]);
 
 	//Sólo se puede dinamitar si no fue ya dinamitado.
-	if(ciudad[y][x].dinamitado == FALSE){
+	if(city[y][x].isDynamited == FALSE){
 
 		//Si se encuentra un fuego, deben considerarse los terrenos alrededor.
-		if(ciudad[y][x].tipo == FUEGO){
+		if(city[y][x].type == FIRE){
 			//Más información en la definición de la función.
-			setPeligroMult(x, y, nivel, ciudad);
+			setDangerMult(x, y, level, city);
 		}
 
 		//Cuando un terreno se dinamita ya no está en peligro porque ahora hay agua.
-		ciudad[y][x].dinamitado = TRUE;
-		ciudad[y][x].enPeligro = FALSE;
-		ciudad[y][x].tipo = AGUA;
+		city[y][x].isDynamited = TRUE;
+		city[y][x].isInDanger = FALSE;
+		city[y][x].type = WATER;
 
 		//El 1 le dice al juego que si pudiste dinamitar.
 		return 1;
