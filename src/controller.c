@@ -58,7 +58,7 @@ int main(){
 			case 1: //Preparar juego.
 
 				if(isReady){
-					printw("\nYa hay un juego listo para jugarse.");
+					printw("\nThere's a game ready to be played!");
 					getch();
 					refresh();
 				}else{
@@ -81,7 +81,7 @@ int main(){
 					//Ya se jugó, por lo tanto no hay juego isReady.
 					isReady = FALSE;
 				}else{
-					printw("\nPrimero tienes que preparar un juego.");
+					printw("\nFirst, you have to prepare a game.");
 					getch();
 					refresh();
 				}
@@ -96,7 +96,7 @@ int main(){
 
 				if(ftell(fd) / sizeof(Player) == 0){
 
-					printw("\nNo hay registro alguno.");
+					printw("\nNo records yet.");
 
 					fclose(fd);
 
@@ -117,12 +117,12 @@ int main(){
 				break;
 
 			case 4:
-				printw("\nSaliendo...");
+				printw("\nExiting...");
 				break;
 
 			default:
 
-				printw("\nOpción inválida. Intente nuevamente...");
+				printw("\nInvalid option. Try again...");
 				getch();
 				refresh();
 
@@ -144,14 +144,14 @@ int mainMenu(){
 
 	clear();
 
-	printw("---------------Menu Principal---------------\n\n");
+	printw("---------------Main Menu---------------\n\n");
 
 	int opc;
 
-	printw("[ 1 ] Preparar Juego\n[ 2 ] Iniciar Juego\n"
-		"[ 3 ] Consultas\n[ 4 ] Salir\n");
+	printw("[ 1 ] Prepare Game\n[ 2 ] Start Game\n"
+		"[ 3 ] Queries\n[ 4 ] Exit\n");
 
-	printw("\nElige la opción deseada: ");
+	printw("\nChoose an option: ");
 	scanw("%d", &opc);
 
 	return opc;

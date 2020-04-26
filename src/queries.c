@@ -39,7 +39,7 @@ void queries()
 
 		default:
 
-			printw("\nOpción inválida.");
+			printw("\nInvalid option.");
 
 			getch();
 			refresh();
@@ -61,13 +61,13 @@ int queriesMenu()
 
 	clear();
 
-	printw("---------------Menú de Consultas---------------\n\n");
+	printw("---------------Queries Menu---------------\n\n");
 
-	printw("[ 1 ] Todos los juegos\n[ 2 ] Por level de dificultad específico\n"
-		   "[ 3 ] Ordenados por puntuación\n[ 4 ] Por Player específico\n"
-		   "[ 5 ] Regresar\n");
+	printw("[ 1 ] All games\n[ 2 ] By difficulty level\n"
+		   "[ 3 ] Ordered by points\n[ 4 ] By Player\n"
+		   "[ 5 ] Return\n");
 
-	printw("\nElige la opción deseada: ");
+	printw("\nChoose an option: ");
 	scanw("%d", &opc);
 
 	return opc;
@@ -78,7 +78,7 @@ void queryAll()
 
 	clear();
 
-	printw("---------------Todos los Juegos---------------\n\n");
+	printw("---------------All Games---------------\n\n");
 
 	//Se abre el archivo en modo lectura.
 	FILE *fd = openRecords(0);
@@ -91,7 +91,7 @@ void queryAll()
 	while (fread(&jug, sizeof(Player), 1, fd) > 0)
 	{
 
-		printw("Player: %s\nPuntuación: %d\nlevel: %d\nturns jugados: %d\n\n",
+		printw("Player: %s\nPoints: %d\nLevel: %d\nPlayed turns: %d\n\n",
 			   jug.name, jug.points, jug.level, jug.turns);
 	}
 
@@ -107,21 +107,21 @@ void queryLevel()
 
 	clear();
 
-	printw("---------------Por level de Dificultad Específico---------------\n\n");
+	printw("---------------By Difficulty Level---------------\n\n");
 
 	int level;
 	//Si se encuentra por lo menos un Player con el level deseado, se vuelve FALSE.
 	//Sólo se usa para mostrar o no un mensaje que diga que no hay Player con ese level.
 	bool flag = TRUE;
 
-	printw("Ingresa el level de dificultad (3-10): ");
+	printw("Difficulty level (3-10): ");
 	scanw("%d", &level);
 	while (level < 3 || level > 10)
 	{
 
-		printw("\nLos leveles de dificultad están entre 3 y 10.\n\n");
+		printw("\nDifficulty level must be between 3 and 10.\n\n");
 
-		printw("Ingresa el level de dificultad (3-10): ");
+		printw("Difficulty level (3-10): ");
 		scanw("%d", &level);
 	}
 
@@ -138,7 +138,7 @@ void queryLevel()
 		{
 
 			//Pues se imprime el Player, duhhh.
-			printw("\nPlayer: %s\nPuntuación: %d\nlevel: %d\nturns jugados: %d\n",
+			printw("\nPlayer: %s\nPoints: %d\nLevel: %d\nPlayed turns: %d\n",
 				   jug.name, jug.points, jug.level, jug.turns);
 
 			//FALSE pa' mostrar un mensaje bonito al final.
@@ -150,7 +150,7 @@ void queryLevel()
 
 	if (flag)
 	{
-		printw("\nNo hay registros para ese level específico.");
+		printw("\nNo records for this level.");
 	}
 
 	getch();
@@ -161,7 +161,7 @@ void queryPoints(){
 
 	clear();
 
-	printw("---------------Ordenados por Puntuación---------------\n\n");
+	printw("---------------Ordered by Points---------------\n\n");
 
 	FILE *fd = openRecords(2);
 
@@ -212,7 +212,7 @@ void queryPoints(){
 	//que se lea algo sin tamaño (pasa esto cuando ya no hay nada que leer).
 	while (fread(&jug, sizeof(Player), 1, fd) > 0){
 
-		printw("Player: %s\nPuntuación: %d\nlevel: %d\nturns jugados: %d\n\n",
+		printw("Player: %s\nPoints: %d\nLevel: %d\nPlayed turns: %d\n\n",
 			jug.name, jug.points, jug.level, jug.turns);
 
 	}
@@ -231,12 +231,12 @@ void queryPlayer()
 
 	clear();
 
-	printw("---------------Por Player Específico---------------\n\n");
+	printw("---------------By Player---------------\n\n");
 
 	char name[50];
 	bool flag = TRUE;
 
-	printw("Ingresa el name del Player: ");
+	printw("Name: ");
 	scanw("%[^\n]", name);
 
 	FILE *fd = openRecords(0);
@@ -249,7 +249,7 @@ void queryPlayer()
 		if (strcmp(jug.name, name) == 0)
 		{
 
-			printw("\nPlayer: %s\nPuntuación: %d\nlevel: %d\nturns jugados: %d\n",
+			printw("\nPlayer: %s\nPoints: %d\nLevel: %d\nPlayed turns: %d\n",
 				   jug.name, jug.points, jug.level, jug.turns);
 
 			flag = FALSE;
@@ -260,7 +260,7 @@ void queryPlayer()
 
 	if (flag)
 	{
-		printw("\nNo hay registros para ese Player específico.");
+		printw("\nNo records for this player.");
 	}
 
 	getch();

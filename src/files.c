@@ -63,7 +63,7 @@ void createRecords(){
 
 		//Función para imprimir errores del sistema.
 		//Se puede usar printf, pero el no poder crear archivos es a veces error interno.
-        perror("Error al crear el archivo");
+        perror("Error: can't create file");
 
         exit(1);
 
@@ -93,7 +93,7 @@ FILE* openRecords(int mode){
 
         endwin();
 
-        perror("Error al abrir el archivo");
+        perror("Error: can't open file");
 
         exit(1);
 

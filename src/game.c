@@ -10,13 +10,13 @@ void setGame(Player *j, Fireman *b, Ground city[][10]){
 
 	clear();
 
-	printw("---------------Preparar Juego---------------\n\n");
+	printw("---------------Prepare Game---------------\n\n");
 
 	setPlayer(j);
 	createFireman(b, j->level, j->turns);
 	buildCity(city, j->level, b->x, b->y);
 
-	printw("\n¡Juego listo!");
+	printw("\nGame ready!");
 
 	getch();
 	refresh();
@@ -54,7 +54,7 @@ void startGame(Player *j, Fireman *b, Ground city[][10], Player js[], int *numJs
 
 			attron(COLOR_PAIR(5));
 
-			printw("---------------Juego Iniciado---------------");
+			printw("---------------Game Initialized---------------");
 
 			//Se actualiza el mapa y la información con cada vuelta, legal o ilegal.
 			showMap(city, j->level, b->x, b->y);
@@ -88,7 +88,7 @@ void startGame(Player *j, Fireman *b, Ground city[][10], Player js[], int *numJs
 						}
 
 					}else{
-						printw("\nYa no tienes dynamites.\n");
+						printw("\nYou don't have any dynamites.\n");
 						band = 0;
 						getch();
 						refresh();
@@ -121,14 +121,14 @@ void startGame(Player *j, Fireman *b, Ground city[][10], Player js[], int *numJs
 
 	clear();
 
-	printw("---------------Juego Iniciado---------------");
+	printw("---------------Game Initialized---------------");
 	
 	showMap(city, j->level, b->x, b->y);
 	showPosInfo(city, b->y, b->x, turns, j->turns, din);
 	
 	//Si logras vencer al FIRE se te felicita con mucho entusiasmo.
 	if(incendios == 0){
-		printw("\n¡Has acabado con todos los incendios!\n");
+		printw("\nYou have extinguished all fires!\n");
 		//Los turns tienen un offset positivo de 1, así que se lo resto aquí.
 		j->turns = turns - 1;
 	}
@@ -136,11 +136,11 @@ void startGame(Player *j, Fireman *b, Ground city[][10], Player js[], int *numJs
 	//Si no acabaste con todos los incendios, se imprime un mensaje
 	//diciendo que la lluvia jugó mejor que tú.
 	if(incendios > 0){
-		printw("\n¡Ha legado la lluvia!\n");
+		printw("\nIt's raining!\n");
 	}
 
 	setPoints(j, city);
-	printw("\nTu puntuación es: %d\n", j->points);
+	printw("\nYour points: %d\n", j->points);
 
 	//Se guarda el Player en el arreglo y se incrementa el contador de Playeres.
 	js[*numJs] = *j;
@@ -153,7 +153,7 @@ void startGame(Player *j, Fireman *b, Ground city[][10], Player js[], int *numJs
 	//Lo hice así para que no te salgas sin querer del juego por presionar
 	//cualquier otra tecla. Uno puede querer quedarse un rato ahí viendo su puntuación.
 	//noecho() es para que no muestre las teclas presionadas.
-	printw("\nPresiona la tecla 's' para continuar...");
+	printw("\nPress 's' to continue...");
 	noecho();
 	while(getch() != 's');
 	echo();
@@ -172,8 +172,8 @@ void showMap(Ground city[][10], int level, int x, int y){
 	int i;
 	int k;
 
-	printw("\n\nE-BUILDING, P-PASTURE, A-WATER, F-FIRE, B-Fireman, "
-		"!-En peligro, *-Dinamitado\n\n");
+	printw("\n\nB-BUILDING, P-PASTURE, W-WATER, F-FIRE, i-Fireman, "
+		"!-In Danger, *-Dynamited\n\n");
 
 	//Se recorre la city.
 	for(i = 0; i < level; i++){
@@ -182,7 +182,7 @@ void showMap(Ground city[][10], int level, int x, int y){
 			//Si las coordenadas del Ground son las mismas que las del Fireman
 			//se concatena una B.
 			if(k == x && i == y){
-				strcpy(desc, " B");
+				strcpy(desc, " i");
 			}else{
 				strcpy(desc, " ");
 			}
@@ -191,7 +191,7 @@ void showMap(Ground city[][10], int level, int x, int y){
 			//y se enciende el color que le corresponde.
 			if(city[i][k].type == BUILDING){
 
-				strcat(desc, "E");
+				strcat(desc, "B");
 				attron(COLOR_PAIR(4));
 
 			}else if(city[i][k].type == PASTURE){
@@ -206,7 +206,7 @@ void showMap(Ground city[][10], int level, int x, int y){
 
 			}else if(city[i][k].type == WATER){
 
-				strcat(desc, "A");
+				strcat(desc, "W");
 				attron(COLOR_PAIR(3));
 
 			}
@@ -228,7 +228,7 @@ void showMap(Ground city[][10], int level, int x, int y){
 			//Los Grounds de arriba tienen las letras negras.
 
 			//El Ground en el que se encuentra el Fireman tiene letras moradas.
-			if(desc[1] == 'B'){
+			if(desc[1] == 'i'){
 
 				if(city[i][k].type == BUILDING){
 					attron(COLOR_PAIR(9));
@@ -297,12 +297,12 @@ void showPosInfo(Ground city[][10], int y, int x, int turn, int turns, int dynam
 		strcpy(type, "BUILDING");
 	}
 
-	printw("Se encuentra en: %s\t", type);
-	printw("En coordenadas: X=%d, Y=%d\n", x, y);
-	printw("Dinamitado: %s\t\t\t", city[y][x].isDynamited ? "Sí" : "No");
-	printw("En peligro: %s\n", city[y][x].isInDanger ? "Sí" : "No");
-	printw("dynamites: %d\t\t\t", dynamites);
-	printw("Turno %d de %d\n", turn, turns);
+	printw("Current position: %s\t", type);
+	printw("Coordinates: X=%d, Y=%d\n", x, y);
+	printw("Dynamited: %s\t\t\t", city[y][x].isDynamited ? "Yes" : "No");
+	printw("In Danger: %s\n", city[y][x].isInDanger ? "Yes" : "No");
+	printw("Dynamites: %d\t\t\t", dynamites);
+	printw("Turn %d of %d\n", turn, turns);
 
 }
 
@@ -314,17 +314,17 @@ int actionMenu(){
 	int x;
 	int y;
 
-	printw("\n[ 1 ] Norte\n[ 2 ] Sur\n[ 3 ] Oste\n[ 4 ] Este\n"
-		"[ 5 ] Dinamitar\n[ 6 ] Mantenerse aquí\n");
+	printw("\n[ 1 ] North\n[ 2 ] South\n[ 3 ] West\n[ 4 ] East\n"
+		"[ 5 ] Dynamite\n[ 6 ] Stay here\n");
 
-	printw("\nElige la opción deseada: ");
+	printw("\nChoose an option: ");
 	scanw("%d", &opc);
 
 	getyx(stdscr, y, x);
 
 	while(opc <= 0 || opc > 6){
 
-		printw("\nOpción inválida.\n");
+		printw("\nInvalid option.\n");
 
 		getch();
 		move(y - 2, x);
@@ -332,7 +332,7 @@ int actionMenu(){
 		clrtobot();
 		refresh();
 
-		printw("\nElige la opción deseada: ");
+		printw("\nChoose an option: ");
 		scanw("%d", &opc);
 
 	}

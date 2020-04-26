@@ -10,27 +10,27 @@ void createFireman(Fireman *b, int level, int turns){
 
 	//Al level le resto uno porque, si se elige un 10, por ejemplo, 
 	//las coordenadas irán del 0 al 9.
-	printw("Ingresa la coordenada X del Fireman (0-%d): ", level - 1);
+	printw("X coordinate of the fireman (0-%d): ", level - 1);
 	scanw("%d", &x);
 	while(x < 0 || x > level - 1){
 
-		printw("\nLa coordenada X del Fireman debe estar entre 0 y %d."
+		printw("\nX coordinate of the fireman must be between 0 and %d."
 			"\n\n", level - 1);
 
-		printw("Ingresa la coordenada X del Fireman (0-%d): ", level - 1);
+		printw("X coordinate of the fireman (0-%d): ", level - 1);
 		scanw("%d", &x);
 
 	}
 	b->x = x;
 
-	printw("Ingresa la coordenada Y del Fireman (0-%d): ", level - 1);
+	printw("Y coordinate of the fireman (0-%d): ", level - 1);
 	scanw("%d", &y);
 	while(y < 0 || y > level - 1){
 
-		printw("\nLa coordenada Y del Fireman debe estar entre 0 y %d."
+		printw("\nY coordinate of the fireman must be between 0 and %d."
 			"\n\n", level - 1);
 
-		printw("Ingresa la coordenada Y del Fireman (0-%d): ", level - 1);
+		printw("Y coordinate of the fireman (0-%d): ", level - 1);
 		scanw("%d", &y);
 
 	}
@@ -53,7 +53,7 @@ int moveFireman(int direction, Fireman *b, int level){
 
 		}else{
 
-			printw("\nNo puedes huir de la ciudad.");
+			printw("\nYou can't run away from the city.");
 			getch();
 			refresh();
 
@@ -71,7 +71,7 @@ int moveFireman(int direction, Fireman *b, int level){
 
 		}else{
 
-			printw("\nNo puedes huir de la ciudad.");
+			printw("\nYou can't run away from the city.");
 			getch();
 			refresh();
 
@@ -88,7 +88,7 @@ int moveFireman(int direction, Fireman *b, int level){
 
 		}else{
 
-			printw("\nNo puedes huir de la ciudad.");
+			printw("\nYou can't run away from the city.");
 			getch();
 			refresh();
 
@@ -105,7 +105,7 @@ int moveFireman(int direction, Fireman *b, int level){
 
 		}else{
 
-			printw("\nNo puedes huir de la ciudad.");
+			printw("\nYou can't run away from the city.");
 			getch();
 			refresh();
 
@@ -146,7 +146,7 @@ int dynamite(int x, int y, int level, Ground city[][10]){
 
 	}else{
 
-		printw("\nEste terreno ya está dinamitado.\n");
+		printw("\nAlready dynamited.\n");
 		getch();
 		refresh();
 

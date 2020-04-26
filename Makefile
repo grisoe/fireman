@@ -1,5 +1,5 @@
 gamefireman: bin/controller.o bin/files.o bin/colors.o bin/city.o bin/queries.o bin/fireman.o bin/player.o bin/game.o
-	gcc -Wall -o gamefireman bin/controller.o bin/files.o bin/colors.o bin/city.o bin/queries.o bin/fireman.o bin/player.o bin/game.o -lncurses
+	gcc -Wall -o fireman bin/controller.o bin/files.o bin/colors.o bin/city.o bin/queries.o bin/fireman.o bin/player.o bin/game.o -lncurses
 
 bin/controller.o: src/controller.c src/headers/files.h src/headers/colors.h src/headers/city.h src/headers/queries.h src/headers/fireman.h src/headers/player.h
 	mkdir -p bin
@@ -35,5 +35,5 @@ bin/game.o: src/game.c src/headers/game.h src/headers/files.h src/headers/colors
 
 clean:
 	rm -f bin/*
-	rm -f gamefireman
+	rm -f fireman
 	rm -f files/*

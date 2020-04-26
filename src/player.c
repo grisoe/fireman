@@ -17,34 +17,34 @@ void setPlayer(Player *j){
 	//o pereza: al momento de querer hacer consultas por name, deberías
 	//ingresarlo con acento, pero ncurses muestra basura cuando quieres hacer eso.
 	//Algún día lo solucionaré.
-	printw("Ingresa tu name: ");
+	printw("Name: ");
 	scanw("%[^\n]", name);
 
 	if(strlen(name) == 0){
-		strcpy(j->name, "Anonimo");
+		strcpy(j->name, "Anonymous");
 	}else{
 		strcpy(j->name, name);
 	}
 
-	printw("Ingresa el level de dificultad (3-10): ");
+	printw("Difficulty level (3-10): ");
 	scanw("%d", &level);
 	while(level < 3 || level > 10){
 
-		printw("\nLos leveles de dificultad están entre 3 y 10.\n\n");
+		printw("\nDefficulty level between 3 and 10.\n\n");
 
-		printw("Ingresa el level de dificultad (3-10): ");
+		printw("Difficulty level (3-10): ");
 		scanw("%d", &level);
 
 	}
 	j->level = level;
 
-	printw("Ingresa el número de turns (5-30): ");
+	printw("Number of turns (5-30): ");
 	scanw("%d", &turns);
 	while(turns < 5 || turns > 30){
 
-		printw("\nEl número de turns está entre 5 y 30.\n\n");
+		printw("\nTurns must be between 5 and 30.\n\n");
 
-		printw("Ingresa el número de turns (5-30): ");
+		printw("Number of turns (5-30): ");
 		scanw("%d", &turns);
 
 	}

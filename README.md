@@ -15,6 +15,6 @@ make
 To run the game and to clean the project.
 
 ```bash
-./gamefireman
+./fireman
 make clean
 ```
