@@ -22,7 +22,6 @@ To run the game.
 
 ```bash
 ./fireman
-make clean
 ```
 
 To clean the project.
