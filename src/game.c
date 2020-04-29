@@ -6,15 +6,15 @@
 
 //Sólo sirve para envolver a las otras tres funciones que preparan las cosas
 //necesarias para jugar.
-void setGame(Player *j, Fireman *b, Ground city[][10]){
+void setGame(Player *player, Fireman *fireman, Ground city[][10]){
 
 	clear();
 
 	printw("---------------Prepare Game---------------\n\n");
 
-	setPlayer(j);
-	createFireman(b, j->level, j->turns);
-	buildCity(city, j->level, b->x, b->y);
+	setPlayer(player);
+	createFireman(fireman, player->level, player->turns);
+	buildCity(city, player->level, fireman->x, fireman->y);
 
 	printw("\nGame ready!");
 
@@ -23,28 +23,28 @@ void setGame(Player *j, Fireman *b, Ground city[][10]){
 
 }
 
-void startGame(Player *j, Fireman *b, Ground city[][10], Player js[], int *numJs){
+void startGame(Player *player, Fireman *fireman, Ground city[][10], Player players[], int *playerCounter){
 
 	
 
 	int turns;
-	//Opción elegida por el usuario.
-	int opc;
+	//optión elegida por el usuario.
+	int opt;
 	//Mientras intentes hacer cosas inválidas, esta variable se mantendrá en 0.
 	//Esto es así para no perder un turno por el intento de movimiento ilegal.
-	//Obviamente, cada movimiento válido pone esta bandera en 1, sacándote del
+	//Obviamente, cada movimiento válido pone esta flagera en 1, sacándote del
 	//do-while y dantro otra vuelta en el ciclo for, que es el de los turns.
 	//Qué trucazo, ¿no?
-	int band;
-	int din = b->dynamites;
-	int incendios;
+	int flag;
+	int din = fireman->dynamites;
+	int firesCounter;
 
 	//Ciclo principal del juego (cuando ya te estás moviendo y dinamitando).
-	for(turns = 1; turns <= j->turns; turns++){
+	for(turns = 1; turns <= player->turns; turns++){
 
-		//Cuando no hay incendios te sales del ciclo porque apagaste todos
+		//Cuando no hay firesCounter te sales del ciclo porque apagaste todos
 		//y ya no hay nada que hacer.
-		if(incendios == 0){
+		if(firesCounter == 0){
 			break;
 		}
 
@@ -57,61 +57,61 @@ void startGame(Player *j, Fireman *b, Ground city[][10], Player js[], int *numJs
 			printw("---------------Game Initialized---------------");
 
 			//Se actualiza el mapa y la información con cada vuelta, legal o ilegal.
-			showMap(city, j->level, b->x, b->y);
-			showPosInfo(city, b->y, b->x, turns, j->turns, din);
+			showMap(city, player->level, fireman->x, fireman->y);
+			showPosInfo(city, fireman->y, fireman->x, turns, player->turns, din);
 
-			opc = actionMenu();
+			opt = actionMenu();
 
-			switch(opc){
+			switch(opt){
 
-				//Las opciones del 1 al 4 son para moverse.
+				//Las optiones del 1 al 4 son para moverse.
 				//La dirección se pide en otra función.
 				case 1:
 				case 2:
 				case 3:
 				case 4:
-					band = moveFireman(opc, b, j->level);
+					flag = moveFireman(opt, fireman, player->level);
 
 					break;
 
-				//La opción 5 es para dinamitar.
+				//La optión 5 es para dinamitar.
 				case 5:
 
 					if(din > 0){ //Si te quedan, dynamites.
 
 						//Si puedo dinamitar, guardo un 1.
-						band = dynamite(b->x, b->y, j->level, city);
+						flag = dynamite(fireman->x, fireman->y, player->level, city);
 
 						//Resta una dinamita sólo si logró dinamitar.
-						if(band == 1){
+						if(flag == 1){
 							din--;
 						}
 
 					}else{
 						printw("\nYou don't have any dynamites.\n");
-						band = 0;
+						flag = 0;
 						getch();
 						refresh();
 					}
 
 					break;
 
-				case 6: //Opción para no hacer nada.
-					band = 1;
+				case 6: //optión para no hacer nada.
+					flag = 1;
 					break;
 
 			}
 
-			//Se actualiza el número de incendios.
-			incendios = getNumFires(city, j->level);
+			//Se actualiza el número de firesCounter.
+			firesCounter = getNumFires(city, player->level);
 
-		}while(band == 0);
+		}while(flag == 0);
 
 		//Cada tercer turno se incendian los Grounds en peligro y se ponen
 		//en peligro los adyacentes a estos nuevos FIREs.
 		if(turns % 3 == 0){
-			burnDown(city, j->level);
-			setDanger(city, j->level);
+			burnDown(city, player->level);
+			setDanger(city, player->level);
 		}
 
 	}
@@ -123,31 +123,31 @@ void startGame(Player *j, Fireman *b, Ground city[][10], Player js[], int *numJs
 
 	printw("---------------Game Initialized---------------");
 	
-	showMap(city, j->level, b->x, b->y);
-	showPosInfo(city, b->y, b->x, turns, j->turns, din);
+	showMap(city, player->level, fireman->x, fireman->y);
+	showPosInfo(city, fireman->y, fireman->x, turns, player->turns, din);
 	
 	//Si logras vencer al FIRE se te felicita con mucho entusiasmo.
-	if(incendios == 0){
+	if(firesCounter == 0){
 		printw("\nYou have extinguished all fires!\n");
 		//Los turns tienen un offset positivo de 1, así que se lo resto aquí.
-		j->turns = turns - 1;
+		player->turns = turns - 1;
 	}
 
-	//Si no acabaste con todos los incendios, se imprime un mensaje
+	//Si no acabaste con todos los firesCounter, se imprime un mensaje
 	//diciendo que la lluvia jugó mejor que tú.
-	if(incendios > 0){
+	if(firesCounter > 0){
 		printw("\nIt's raining!\n");
 	}
 
-	setPoints(j, city);
-	printw("\nYour points: %d\n", j->points);
+	setPoints(player, city);
+	printw("\nYour points: %d\n", player->points);
 
 	//Se guarda el Player en el arreglo y se incrementa el contador de Playeres.
-	js[*numJs] = *j;
-	(*numJs)++;
+	players[*playerCounter] = *player;
+	(*playerCounter)++;
 
 	//Se escribe la información del Player en un archivo.
-	writeRecords(js, *numJs);
+	writeRecords(players, *playerCounter);
 
 	//No te deja salir del juego hasta que presiones la tecla "s".
 	//Lo hice así para que no te salgas sin querer del juego por presionar
@@ -309,7 +309,7 @@ void showPosInfo(Ground city[][10], int y, int x, int turn, int turns, int dynam
 //Se pide el movimiento deseado en el juego y se regresa al ciclo de este.
 int actionMenu(){
 
-	int opc;
+	int opt;
 
 	int x;
 	int y;
@@ -318,11 +318,11 @@ int actionMenu(){
 		"[ 5 ] Dynamite\n[ 6 ] Stay here\n");
 
 	printw("\nChoose an option: ");
-	scanw("%d", &opc);
+	scanw("%d", &opt);
 
 	getyx(stdscr, y, x);
 
-	while(opc <= 0 || opc > 6){
+	while(opt <= 0 || opt > 6){
 
 		printw("\nInvalid option.\n");
 
@@ -333,10 +333,10 @@ int actionMenu(){
 		refresh();
 
 		printw("\nChoose an option: ");
-		scanw("%d", &opc);
+		scanw("%d", &opt);
 
 	}
 
-	return opc;
+	return opt;
 
 }

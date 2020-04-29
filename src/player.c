@@ -2,7 +2,7 @@
 
 #include "headers/player.h"
 
-void setPlayer(Player *j){
+void setPlayer(Player *player){
 
 	//Tres variables que representan atributos de todo Player.
 	//Se podrían almacenar los valores ingresados por el usuario directamente
@@ -21,9 +21,9 @@ void setPlayer(Player *j){
 	scanw("%[^\n]", name);
 
 	if(strlen(name) == 0){
-		strcpy(j->name, "Anonymous");
+		strcpy(player->name, "Anonymous");
 	}else{
-		strcpy(j->name, name);
+		strcpy(player->name, name);
 	}
 
 	printw("Difficulty level (3-10): ");
@@ -36,7 +36,7 @@ void setPlayer(Player *j){
 		scanw("%d", &level);
 
 	}
-	j->level = level;
+	player->level = level;
 
 	printw("Number of turns (5-30): ");
 	scanw("%d", &turns);
@@ -48,23 +48,23 @@ void setPlayer(Player *j){
 		scanw("%d", &turns);
 
 	}
-	j->turns = turns;
+	player->turns = turns;
 
 }
 
 //Se cuentan los puntos en función de los edificios en pie y se asignan al Player.
-void setPoints(Player *j, Ground city[][10]){
+void setPoints(Player *player, Ground city[][10]){
 
 	int i;
 	int k;
 
-	j->points = 0;
+	player->points = 0;
 
-	for(i = 0; i < j->level; i++){
-		for(k = 0; k < j->level; k++){
+	for(i = 0; i < player->level; i++){
+		for(k = 0; k < player->level; k++){
 			
 			if(city[i][k].type == BUILDING){
-				(j->points)+=100;				
+				(player->points)+=100;				
 			}
 
 		}

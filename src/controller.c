@@ -5,8 +5,8 @@ int main(){
 	//Se explica en su definición.
 	createRecords();
 
-	Fireman b;
-	Player j;
+	Fireman fireman;
+	Player player;
 
 	//De 10x10 porque es lo máximo que puede medir la city.
 	Ground city[10][10];
@@ -15,7 +15,7 @@ int main(){
 	//del programa. 100 posiciones por si es algún traumado (como los que juegan Solitario).
 	Player js[100];
 	//Contador de los Playeres almacenados en el arreglo.
-	int numJs = 0;
+	int playersCounter = 0;
 
 	//Nos dice si ya se preparó un juego o no.
 	//bool no es un tipo de dato nativo de C, está definido en ncurses,
@@ -64,7 +64,7 @@ int main(){
 				}else{
 					//Preparar un juego se divide en la preparación del Player,
 					//del bombero y de la city.
-					setGame(&j, &b, city);
+					setGame(&player, &fireman, city);
 					//Ya se preparó.
 					isReady = TRUE;
 				}
@@ -77,7 +77,7 @@ int main(){
 					//Para iniciar el juego se necesita de un Player, un bombero,
 					//una city, el arreglo de Playeres (para guardar al que va a jugar),
 					//y el contador de Playeres en el arreglo (para incrementarlo).
-					startGame(&j, &b, city, js, &numJs);
+					startGame(&player, &fireman, city, js, &playersCounter);
 					//Ya se jugó, por lo tanto no hay juego isReady.
 					isReady = FALSE;
 				}else{
@@ -146,14 +146,14 @@ int mainMenu(){
 
 	printw("---------------Main Menu---------------\n\n");
 
-	int opc;
+	int opt;
 
 	printw("[ 1 ] Prepare Game\n[ 2 ] Start Game\n"
 		"[ 3 ] Queries\n[ 4 ] Exit\n");
 
 	printw("\nChoose an option: ");
-	scanw("%d", &opc);
+	scanw("%d", &opt);
 
-	return opc;
+	return opt;
 
 }

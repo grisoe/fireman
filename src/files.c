@@ -30,19 +30,19 @@ char *recordsPath(){
 
 }
 
-void writeRecords(Player *js, int numJs){
+void writeRecords(Player *player, int playersCounter){
 
     //Se abre el archivo en mode lectura.
     //Más información en la función abrirArchivo().
     FILE *fd = openRecords(1);
 
     //Se saca al último Player almacenado.
-    Player jug = js[numJs - 1];
+    Player p = player[playersCounter - 1];
 
     //Nos vamos hasta el final del archivo.
     fseek(fd, 0, SEEK_END);
     //Se escribe el Player.
-    fwrite(&jug, sizeof(Player), 1, fd);
+    fwrite(&p, sizeof(Player), 1, fd);
 
     //Se cierra el archivo.
     fclose(fd);

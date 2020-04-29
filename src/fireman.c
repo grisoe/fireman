@@ -39,15 +39,15 @@ void createFireman(Fireman *b, int level, int turns){
 }
 
 
-int moveFireman(int direction, Fireman *b, int level){
+int moveFireman(int direction, Fireman *fireman, int level){
 
 	if(direction == 1){ //Mover hacia arriba.
 
 		//Pero sólo si se puede.
-		if((b->y) - 1 >= 0){
+		if((fireman->y) - 1 >= 0){
 
 			//Nueva coordenada del Fireman en esa dirección.
-			(b->y)--;
+			(fireman->y)--;
 			//El 1 le dice al juego que si pudiste moverte.
 			return 1;
 
@@ -64,9 +64,9 @@ int moveFireman(int direction, Fireman *b, int level){
 
 	}else if(direction == 2){ //Mover hacia abajo.
 
-		if((b->y) + 1 < level){
+		if((fireman->y) + 1 < level){
 
-			(b->y)++;
+			(fireman->y)++;
 			return 1;
 
 		}else{
@@ -81,9 +81,9 @@ int moveFireman(int direction, Fireman *b, int level){
 
 	}else if(direction == 4){ //Mover hacia la derecha.
 
-		if((b->x) + 1 < level){
+		if((fireman->x) + 1 < level){
 
-			(b->x)++;
+			(fireman->x)++;
 			return 1;
 
 		}else{
@@ -98,9 +98,9 @@ int moveFireman(int direction, Fireman *b, int level){
 
 	}else if(direction == 3){ //Mover hacia la izquierda.
 
-		if((b->x) - 1 >= 0){
+		if((fireman->x) - 1 >= 0){
 
-			(b->x)--;
+			(fireman->x)--;
 			return 1;
 
 		}else{

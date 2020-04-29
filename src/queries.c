@@ -57,7 +57,7 @@ void queries()
 int queriesMenu()
 {
 
-	int opc;
+	int opt;
 
 	clear();
 
@@ -68,9 +68,9 @@ int queriesMenu()
 		   "[ 5 ] Return\n");
 
 	printw("\nChoose an option: ");
-	scanw("%d", &opc);
+	scanw("%d", &opt);
 
-	return opc;
+	return opt;
 }
 
 void queryAll()
@@ -84,15 +84,15 @@ void queryAll()
 	FILE *fd = openRecords(0);
 
 	//Para almacenar al objeto que se va leyendo.
-	Player jug;
+	Player p;
 
 	//Se van leyendo objetos del archivo, de uno por uno; se guarda en jug hasta
 	//que se lea algo sin tamaño (pasa esto cuando ya no hay nada que leer).
-	while (fread(&jug, sizeof(Player), 1, fd) > 0)
+	while (fread(&p, sizeof(Player), 1, fd) > 0)
 	{
 
 		printw("Player: %s\nPoints: %d\nLevel: %d\nPlayed turns: %d\n\n",
-			   jug.name, jug.points, jug.level, jug.turns);
+			   p.name, p.points, p.level, p.turns);
 	}
 
 	//Se cierra el archivo.
@@ -128,18 +128,18 @@ void queryLevel()
 	//Se abre el archivo en modo lectura.
 	FILE *fd = openRecords(0);
 
-	Player jug;
+	Player p;
 
-	while (fread(&jug, sizeof(Player), 1, fd) > 0)
+	while (fread(&p, sizeof(Player), 1, fd) > 0)
 	{
 
 		//Si el level del Player actual es igual al buscado por el usuario...
-		if (jug.level == level)
+		if (p.level == level)
 		{
 
 			//Pues se imprime el Player, duhhh.
 			printw("\nPlayer: %s\nPoints: %d\nLevel: %d\nPlayed turns: %d\n",
-				   jug.name, jug.points, jug.level, jug.turns);
+				   p.name, p.points, p.level, p.turns);
 
 			//FALSE pa' mostrar un mensaje bonito al final.
 			flag = FALSE;
@@ -166,8 +166,8 @@ void queryPoints(){
 	FILE *fd = openRecords(2);
 
 	//Para guardar el Player leído.
-	Player jug;
-	Player jug2;
+	Player p;
+	Player p2;
 	Player aux;	
 	
 	fseek(fd, 0, SEEK_END);
@@ -184,22 +184,22 @@ void queryPoints(){
 		for (k = 0; k < s - i; k++){
 
 			fseek(fd, k * sizeof(Player), SEEK_SET);
-			fread(&jug, sizeof(Player), 1, fd);
+			fread(&p, sizeof(Player), 1, fd);
 
 			fseek(fd, (k + 1) * sizeof(Player), SEEK_SET);
-			fread(&jug2, sizeof(Player), 1, fd);
+			fread(&p2, sizeof(Player), 1, fd);
 
-			if (jug.points < jug2.points){
+			if (p.points < p2.points){
 
-				aux = jug;
-				jug = jug2;
-				jug2 = aux;
+				aux = p;
+				p = p2;
+				p2 = aux;
 
 				fseek(fd, k * sizeof(Player), SEEK_SET);
-				fwrite(&jug, sizeof(Player), 1, fd);
+				fwrite(&p, sizeof(Player), 1, fd);
 
 				fseek(fd, (k + 1) * sizeof(Player), SEEK_SET);
-				fwrite(&jug2, sizeof(Player), 1, fd);
+				fwrite(&p2, sizeof(Player), 1, fd);
 
 			}
 			
@@ -210,10 +210,10 @@ void queryPoints(){
 
 	//Se van leyendo objetos del archivo, de uno por uno; se guarda en jug hasta
 	//que se lea algo sin tamaño (pasa esto cuando ya no hay nada que leer).
-	while (fread(&jug, sizeof(Player), 1, fd) > 0){
+	while (fread(&p, sizeof(Player), 1, fd) > 0){
 
 		printw("Player: %s\nPoints: %d\nLevel: %d\nPlayed turns: %d\n\n",
-			jug.name, jug.points, jug.level, jug.turns);
+			p.name, p.points, p.level, p.turns);
 
 	}
 
@@ -241,16 +241,16 @@ void queryPlayer()
 
 	FILE *fd = openRecords(0);
 
-	Player jug;
+	Player p;
 
-	while (fread(&jug, sizeof(Player), 1, fd) > 0)
+	while (fread(&p, sizeof(Player), 1, fd) > 0)
 	{
 
-		if (strcmp(jug.name, name) == 0)
+		if (strcmp(p.name, name) == 0)
 		{
 
 			printw("\nPlayer: %s\nPoints: %d\nLevel: %d\nPlayed turns: %d\n",
-				   jug.name, jug.points, jug.level, jug.turns);
+				   p.name, p.points, p.level, p.turns);
 
 			flag = FALSE;
 		}

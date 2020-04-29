@@ -4,8 +4,8 @@
 
 void buildCity(Ground city[][10], int level, int x, int y){
 
-	int r;
-	int r2;
+	int ran;
+	int ran2;
 
 	int i;
 	int k;
@@ -27,13 +27,13 @@ void buildCity(Ground city[][10], int level, int x, int y){
 	//no sean las mismas del bombero.
 	do{
 
-		r = rand() % level;
-		r2 = rand() % level;
+		ran = rand() % level;
+		ran2 = rand() % level;
 
-	} while (r == y && r2 == x);
+	} while (ran == y && ran2 == x);
 
 	//Asigno el FIRE a la city y el type BUILDING al lugar del bombero.
-	city[r][r2].type = FIRE;
+	city[ran][ran2].type = FIRE;
 	city[y][x].type = BUILDING;
 
 	setDanger(city, level);
@@ -137,8 +137,7 @@ int getNumFires(Ground city[][10], int level){
 //Grounds a su alrededor pueden estar en peligro no solo por él, sino por otros
 //FIREs vecinos, así que debe validarse eso para no quitar el peligro de un
 //Ground que deba seguir estando amenazado aun dinamitando un FIRE.
-void setDangerMult(int x, int y, int level, Ground city[][10])
-{
+void setDangerMult(int x, int y, int level, Ground city[][10]){
 
 	//Norte.
 	//Si hay un Ground arriba del FIRE, a este de arriba se le quita el peligro.
