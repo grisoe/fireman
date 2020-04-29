@@ -4,17 +4,29 @@ A C game about a fireman.
 
 ## Installation
 
-Compile the source code.
+You need to install the ncurses library.
 
-```bach
+```bash
+sudo apt install libncurses5* libncursesw5*
+```
+
+Then compile the source code.
+
+```bash
 make
 ```
 
 ## Usage
 
-To run the game and to clean the project.
+To run the game.
 
 ```bash
 ./fireman
+make clean
+```
+
+To clean the project.
+
+```bash
 make clean
 ```
