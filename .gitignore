@@ -1,3 +1,8 @@
-**/.vscode
+/.vscode/
+/.idea/
+/bin/*.o
+!bin/.gitkeep
+/files/*
+!files/.gitkeep
 TODO
 fireman
