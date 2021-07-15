@@ -1,159 +1,121 @@
 #include "headers/controller.h"
 
-int main(){
+int main() {
 
-	//Se explica en su definición.
-	createRecords();
+    createRecords();
 
-	Fireman fireman;
-	Player player;
+    Fireman fireman;
+    Player player;
+    Ground city[10][10];
+    Player js[100];
 
-	//De 10x10 porque es lo máximo que puede medir la city.
-	Ground city[10][10];
+    int playersCounter = 0;
+    bool isReady = FALSE;
+    int menu;
 
-	//Este arreglo es para guardar a todos los Playeres de una sola ejecución
-	//del programa. 100 posiciones por si es algún traumado (como los que juegan Solitario).
-	Player js[100];
-	//Contador de los Playeres almacenados en el arreglo.
-	int playersCounter = 0;
+    srand(time(NULL));
 
-	//Nos dice si ya se preparó un juego o no.
-	//bool no es un tipo de dato nativo de C, está definido en ncurses,
-	//al igual que sus posibles valores (TRUE y FALSE).
-	bool isReady = FALSE;
+    initscr();
+    startColors();
+    scrollok(stdscr, TRUE);
 
-	//Para almacenar la opción del menú principal.
-	int menu;
+    FILE *fd;
 
-	//Se le da a srand el del sistema en segundos para que inicie la generación de
-	//números aleatorios.
-	//En Linux, ejecutar los comandos "man 2 time" y "man srand" para leer más.
-	srand(time(NULL));
+    do {
 
-	initscr();
+        attron(COLOR_PAIR(5));
 
-	//Explicada en su definición.
-	startColors();
+        menu = mainMenu();
 
-	//No recuerdo para que es esta línea; la comento y todo funciona igual.
-	//Tal vez fue para resolver un problema específico de cierta terminal.
-	//UPDATE: creo que es para hacer scroll automático a la pantalla cuando
-	//esta se llena de información.
-	scrollok(stdscr, TRUE);
+        switch (menu) {
 
-	FILE *fd;
+            case 1:
 
-	//Es el ciclo principal del programa.
-	do{
+                if (isReady) {
+                    printw("\nThere's a game ready to be played!");
+                    getch();
+                    refresh();
+                } else {
+                    setGame(&player, &fireman, city);
+                    isReady = TRUE;
+                }
 
-		//attron() es una función de ncurses para iniciar atributos de la ventana.
-		//COLOR_PAIR() es el atributo que inicia colores, su argumento es el número de un
-		//par de estos. En la definición de iniciarColores() explico este número.
-		attron(COLOR_PAIR(5));
+                break;
 
-		menu = mainMenu();
+            case 2:
 
-		switch(menu){
+                if (isReady) {
+                    startGame(&player, &fireman, city, js, &playersCounter);
+                    isReady = FALSE;
+                } else {
+                    printw("\nFirst, you have to prepare a game.");
+                    getch();
+                    refresh();
+                }
 
-			case 1: //Preparar juego.
+                break;
 
-				if(isReady){
-					printw("\nThere's a game ready to be played!");
-					getch();
-					refresh();
-				}else{
-					//Preparar un juego se divide en la preparación del Player,
-					//del bombero y de la city.
-					setGame(&player, &fireman, city);
-					//Ya se preparó.
-					isReady = TRUE;
-				}
+            case 3:
 
-				break;
+                fd = openRecords(0);
 
-			case 2: //Iniciar juego.
+                fseek(fd, 0, SEEK_END);
 
-				if(isReady){
-					//Para iniciar el juego se necesita de un Player, un bombero,
-					//una city, el arreglo de Playeres (para guardar al que va a jugar),
-					//y el contador de Playeres en el arreglo (para incrementarlo).
-					startGame(&player, &fireman, city, js, &playersCounter);
-					//Ya se jugó, por lo tanto no hay juego isReady.
-					isReady = FALSE;
-				}else{
-					printw("\nFirst, you have to prepare a game.");
-					getch();
-					refresh();
-				}
+                if (ftell(fd) / sizeof(Player) == 0) {
 
-				break;
+                    printw("\nNo records yet.");
+                    fclose(fd);
 
-			case 3: //Consultas.
+                    getch();
+                    refresh();
 
-				fd = openRecords(0);
+                } else {
 
-				fseek(fd, 0, SEEK_END);
+                    fclose(fd);
+                    attron(COLOR_PAIR(5));
+                    queries();
 
-				if(ftell(fd) / sizeof(Player) == 0){
+                }
 
-					printw("\nNo records yet.");
+                break;
 
-					fclose(fd);
+            case 4:
+                printw("\nExiting...");
+                break;
 
-					getch();
-					refresh();
+            default:
 
-				}else{
+                printw("\nInvalid option. Try again...");
+                getch();
+                refresh();
 
-					fclose(fd);
+                break;
 
-					//El par de colores 5 es fondo negro con letras blancas.
-					//Se hace así para una mejor lectura de puntuación.
-					attron(COLOR_PAIR(5));
-					queries();
+        }
 
-				}
+    } while (menu != 4);
 
-				break;
+    getch();
+    refresh();
 
-			case 4:
-				printw("\nExiting...");
-				break;
-
-			default:
-
-				printw("\nInvalid option. Try again...");
-				getch();
-				refresh();
-
-				break;
-
-		}
-
-	}while(menu != 4);
-
-	getch();
-	refresh();
-
-	endwin();
+    endwin();
 
 }
 
-//Para pedir y regresar la opción deseada del menú principal.
-int mainMenu(){
+int mainMenu() {
 
-	clear();
+    clear();
 
-	printw("---------------Main Menu---------------\n\n");
+    printw("---------------Main Menu---------------\n\n");
 
-	int opt;
+    int opt;
 
-	printw("[ 1 ] Prepare Game\n[ 2 ] Start Game\n"
-		"[ 3 ] Queries\n[ 4 ] Exit\n");
+    printw("[ 1 ] Prepare Game\n[ 2 ] Start Game\n"
+           "[ 3 ] Queries\n[ 4 ] Exit\n");
 
-	printw("\nChoose an option: ");
-	scanw("%d", &opt);
+    printw("\nChoose an option: ");
+    scanw("%d", &opt);
 
-	return opt;
+    return opt;
 
 }

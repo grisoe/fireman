@@ -2,16 +2,11 @@
 
 #include "headers/colors.h"
 
-//Se crean los colores a usar en el juego.
-void startColors(){
+void startColors() {
 
-	//Función de ncurses para decirle que vamos a usar colores.
-	start_color();
+    start_color();
 
-	//Función de ncurses para crear y nombrar un par de colores:
-	//El primer número es con el que identificamos al par,
-	//sigue el color de los caracteres y el último es el del fondo.
-	init_pair(1, COLOR_BLACK, COLOR_RED);
+    init_pair(1, COLOR_BLACK, COLOR_RED);
     init_pair(2, COLOR_BLACK, COLOR_GREEN);
     init_pair(3, COLOR_BLACK, COLOR_CYAN);
     init_pair(4, COLOR_BLACK, COLOR_WHITE);
@@ -29,13 +24,12 @@ void startColors(){
 
 }
 
-//Se apagan los atributos de los 13 colores.
-void stopColors(){
+void stopColors() {
 
-	int i;
+    int i;
 
-	for(i = 1; i <= 13; i++){
-		attroff(COLOR_PAIR(i));
-	}
+    for (i = 1; i <= 13; i++) {
+        attroff(COLOR_PAIR(i));
+    }
 
 }
