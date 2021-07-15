@@ -108,7 +108,7 @@ int main(){
 					fclose(fd);
 
 					//El par de colores 5 es fondo negro con letras blancas.
-					//Se hace así para una mejor lectura de puntuación.		
+					//Se hace así para una mejor lectura de puntuación.
 					attron(COLOR_PAIR(5));
 					queries();
 
